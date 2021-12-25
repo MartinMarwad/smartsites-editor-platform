@@ -1,0 +1,48 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% if entrypoints %}
+        {% for file in entrypoints.css %}
+    <link href="{% static file %}" rel="stylesheet">
+        {% endfor %}
+    {% elif main_css %}
+    <link href="{% static main_css %}" rel="stylesheet">
+    {% endif %}
+    <title>{{ title }}</title>
+</head>
+
+<body>
+    <div id="root">Loading...</div>
+    {{ props | json_script:"react-props" }}
+
+    <script>
+        window.component = '{{ component }}';
+        window.props = JSON.parse(
+        document.getElementById('react-props').textContent);
+        window.reactRoot = document.getElementById('react');
+    </script>
+    
+    {% if bundle_js %}
+        {% for file in bundle_js %}
+    <script type="text/javascript" src="{{ file }}"></script>
+        {% endfor %}
+    {% elif entrypoints %}
+        {% for file in entrypoints.js %}
+    <script type="text/javascript" src="{% static file %}"></script>
+        {% endfor %}
+    {% elif main_js %}
+    
+    <script type="text/javascript" src="{% static runtime_main_js %}"></script>
+    {# make sure to update this accordingly according to asset-manifest.json #}
+    <script type="text/javascript" src="{% static static_js_2_597565cd_chunk_js %}"></script>
+    <script type="text/javascript" src="{% static main_js %}"></script>
+    {% endif %}
+</body>
+
+</html>

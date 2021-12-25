@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+
+    # Django: Backend
+    django:
+        image: smartsites-editor-platform:latest
+        build: .
+        container_name: Django
+        command: bash ./start.sh ${MODE}
+        volumes:
+            - .:/Website
+        ports:
+            - 8000:8000
+        restart: always
+        environment: 
+            - MODE=${MODE}
+
+    # ReactJS: Frontend Development Server
+    reactjs:
+        build: .
+        container_name: ReactJS
+        command: npm start
+        volumes:
+            - .:/Website
+        ports:
+            - 3000:3000
+        restart: always
+        stdin_open: true
+

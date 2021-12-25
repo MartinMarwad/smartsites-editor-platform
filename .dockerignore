@@ -1,0 +1,8 @@
+# Docker Ignore: Ingore files from docker image
+
+# Folders
+.vscode
+node_modules
+data
+
+# Files
