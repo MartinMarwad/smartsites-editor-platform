@@ -1,21 +1,23 @@
 ## A set of helpful Makefile tools to aid development.
 
+export MODE=UNDEFINED
+
 # Force own all files created by docker
 fix:
 	@sudo chown ${USER} -R *
 
 # Start
-up:
+up: # Start up container in development mode
 	@MODE=DEVELOPMENT docker-compose up -d
 	@MODE=DEVELOPMENT make logs
 
-up.prod:
+up.prod: # Start up container in production mode
 	@MODE=PRODUCTION docker-compose up -d django
 	@make logs
 
 # Stop
 down:
-	@MODE=UNDEFINED docker-compose down
+	@docker-compose down
 
 # Restart
 restart:
@@ -26,9 +28,27 @@ restart.prod:
 	@make down
 	@make up.prod
 
+restart.clean: # Shutdown all containers, delete data, restart containers
+	@make down
+	@make fix 
+	@make clean
+	@make up
+
 # Show logs
 logs:
-	@MODE=UNDEFINED docker-compose logs -f 
+	@docker-compose logs -f 
+
+# Run container without executing startup 
+run: # Run an anonymous command like exe="my_cammnd -whatever"
+	@docker-compose run django $(exe)
+
+# Open terminal in container.
+bash:
+	@docker-compose exec django bash
+
+# Open Django IPython Console Shell
+shell:
+	@docker-compose exec django python manage.py shell_plus
 
 # Clean files
 clean:
@@ -54,55 +74,23 @@ rebuild:
 	@make build
 	@make up
 
-## Django Container
-django:
-	@docker-compose exec django bash
+## Django specific commands
+django: # Alias for "make terminal"
+	@make terminal
 
-django.start:
-	@docker-compose start django
-
-django.stop:
-	@docker-compose stop django
-
-django.restart:
-	@make django.stop
-	@make django.start 
-
-django.logs:
-	@docker-compose logs -f django
-
-django.run: # Run an anonymous command like exe="my_cammnd -whatever"
-	@docker-compose run django $(exe)
-
-django.terminal:
-	@docker-compose exec django $(exe)
-
-django.shell:
-	@docker-compose exec django python manage.py shell_plus
-
-django.createadmin:
-	@docker-compose exec django echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('admin', 'admin@myproject.com', 'password')" | python manage.py shell
-
-django.collectstatic:
+collectstatic: # Runs Django collectstatic command
 	@docker-compose run django python manage.py collectstatic --noinput
 
-## React Container
-react:
-	@docker-compose exec reactjs bash
+migrations: # Runs Django collectstatic command
+	@docker-compose exec django python manage.py makemigrations
+	@docker-compose exec django python manage.py migrate
 
-react.logs:
-	@docker-compose logs -f reactjs
+## React specific commands
+react.install: # npm install
+	@docker-compose run django npx npm install
 
-react.run:
-	@docker-compose run reactjs $(exe)
+react.build: # npm build
+	@docker-compose run django npx npm run build
 
-react.terminal:
-	@docker-compose exec reactjs $(exe)
-
-react.install:
-	@docker-compose run reactjs npm install
-
-react.build:
-	@docker-compose run reactjs npm run build
 
 FORCE: # Hack to force target: Keep this at the bottom.

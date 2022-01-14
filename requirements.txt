@@ -1,15 +1,24 @@
-## Python Requirments
+## Python Requirements
 
-## Django
+# General
+ipython                                 # https://github.com/ipython/ipython
+
+# Django
 Django                                  # https://github.com/django/django
 djangorestframework                     # https://github.com/encode/django-rest-framework
+drf-extra-fields                        # https://github.com/Hipo/drf-extra-fields
+djangorestframework-simplejwt           # https://github.com/jazzband/djangorestframework-simplejwt
+django-filter                           # https://github.com/carltongibson/django-filter
 django-extensions                       # https://github.com/django-extensions/django-extensions
 Werkzeug                                # https://github.com/pallets/werkzeug
 django-environ                          # https://github.com/joke2k/django-environ
 psycopg2                                # https://github.com/psycopg/psycopg2/
+django-db-logger                        # https://github.com/CiCiUi/django-db-logger
 
 # Webserver & Static files
 django-hosts                            # https://github.com/jazzband/django-hosts
 gunicorn                                # https://github.com/benoitc/gunicorn
+gevent                                  # https://github.com/gevent/gevent/
 whitenoise[brotli]                      # https://github.com/evansd/whitenoise
 django-cra-helper                       # https://github.com/MasterKale/django-cra-helper
+Pillow                                  # https://github.com/python-pillow/Pillow

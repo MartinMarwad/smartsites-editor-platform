@@ -16,10 +16,11 @@ import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+BUILD_DIR = BASE_DIR / 'build'
 DATA_DIR = BASE_DIR / 'data'
 
 
-# Quick-start development settings - unsuitable for production
+## Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -36,11 +37,12 @@ if MODE == "PRODUCTION": DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
-# Application definition
+## Application definition
 
 INSTALLED_APPS = [
     # Django-CRA-Helper Extension
     'cra_helper',
+    'whitenoise.runserver_nostatic',
 
     # Default Extensions
     'django.contrib.admin',
@@ -49,12 +51,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+   
+    # Third Party Extensions
+    'django_filters',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'rest_framework_simplejwt',
+    'django_extensions',
+    'django_db_logger',
 
-    # Internal Extensions
+     # Internal Extensions
     'app',
 
-    # Third Party Extensions
-    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -93,7 +101,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Website.wsgi.application'
 
 
-# Database
+## Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
@@ -104,7 +112,48 @@ DATABASES = {
 }
 
 
-# Password validation
+## Logging
+# https://docs.djangoproject.com/en/4.0/ref/settings/#logging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(asctime)s %(message)s'
+        },
+    },
+    'handlers': {
+        'db_log': {
+            'level': 'DEBUG',
+            'class': 'django_db_logger.db_log_handler.DatabaseLogHandler'
+        },
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'db': {
+            'handlers': ['db_log', 'console',],
+            'level': 'DEBUG'
+        },
+        'django.request': {
+            'handlers': ['db_log', 'console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'django.db.backends': {
+            'handlers': ['db_log', 'console'],
+            'level': 'ERROR',
+            'propagate': True,
+        }
+    }
+}
+
+
+## Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -123,7 +172,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
+## Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
@@ -135,7 +184,7 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
+## Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 # Set URL for static files
@@ -144,21 +193,59 @@ STATIC_URL = 'static/'
 # Set root directory for static files collected
 STATIC_ROOT = DATA_DIR / 'staticfiles'
 
+# Set static file locations
+STATICFILES_DIRS = [BUILD_DIR, ]
+
 # Whitenoise: Add compression and caching support
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 # Django-CRA-Helper: Modify Staticfinders
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',  # Required for CRAManifestFinder below to work
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'cra_helper.finders.CRAManifestFinder',                 # A finder to pull in asset-manifest.json
 ]
 
+## Whitenoise Settings
+WHITENOISE_ALLOW_ALL_ORIGINS = True
+WHITENOISE_AUTOREFRESH = True
+
+## Media Files
+# https://docs.djangoproject.com/en/4.0/topics/files/
+
+MEDIA_URL = "/media/"
+
+MEDIA_ROOT = DATA_DIR / 'media'
+
+
 # Django-CRA-Helper: Settings
 CRA_APP_NAME = '.'
-CRA_HOST = 'localhost'  # defaults to 'localhost'
-CRA_PORT = 3000         # defaults to 3000
+CRA_HOST = 'localhost'  # Host for create-react-app server (inside docker)
+CRA_PORT = 3000         # Port for create-react-app server (inside docker)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Django REST Framework
+# https://github.com/encode/django-rest-framework
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'app.pagination.PageNumberWithPageSizePagination',
+    'PAGE_SIZE': 10,
+    'DEFAULT_FILTER_BACKENDS': [
+        'rest_framework.filters.OrderingFilter',
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        # SessionAuthentication is intentionally removed, see: https://github.com/encode/django-rest-framework/issues/6104'
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ]
+}

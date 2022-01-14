@@ -2,13 +2,48 @@
   "name": "website",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:8000",
   "dependencies": {
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/styles": "^4.11.4",
+    "@mui/icons-material": "^5.2.5",
+    "@mui/material": "^5.2.8",
+    "@react-page/editor": "^4.3.1",
+    "@react-page/plugins-background": "^4.3.1",
+    "@react-page/plugins-divider": "^4.3.1",
+    "@react-page/plugins-html5-video": "^4.3.1",
+    "@react-page/plugins-image": "^4.3.1",
+    "@react-page/plugins-slate": "^4.3.1",
+    "@react-page/plugins-spacer": "^4.3.1",
+    "@react-page/plugins-video": "^4.3.1",
+    "@react-page/react-admin": "^4.3.1",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^0.24.0",
+    "next": "^12.0.7",
+    "prop-types": "^15.8.0",
+    "ra-data-django-rest-framework": "^0.2.1",
+    "ra-data-fakerest": "^3.19.5",
+    "ra-data-json-server": "^3.19.5",
+    "ra-input-rich-text": "^3.19.6",
+    "raw-loader": "^4.0.2",
     "react": "^17.0.2",
+    "react-admin": "^3.19.5",
     "react-dom": "^17.0.2",
+    "react-github-fork-ribbon": "^0.6.0",
+    "react-helmet": "^6.1.0",
+    "react-katex": "^2.0.2",
+    "react-router-dom": "^5.3.0",
+    "react-router-dom-latest": "npm:react-router-dom@^6.2.1",
     "react-scripts": "5.0.0",
+    "react-syntax-highlighter": "^15.4.5",
+    "react-twitter-widgets": "^1.10.0",
+    "restful-react": "^15.9.4",
+    "styled-components": "^5.3.3",
     "web-vitals": "^2.1.2"
   },
   "scripts": {
@@ -34,5 +69,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react-router-dom": "^5.3.2"
   }
 }

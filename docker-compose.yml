@@ -6,25 +6,26 @@ services:
     django:
         image: smartsites-editor-platform:latest
         build: .
-        container_name: Django
+        container_name: smartsites-editor-platform
         command: bash ./start.sh ${MODE}
-        volumes:
-            - .:/Website
+        restart: always
         ports:
             - 8000:8000
-        restart: always
+            - 3000:3000
+        volumes:
+            - .:/Website
         environment: 
             - MODE=${MODE}
 
     # ReactJS: Frontend Development Server
-    reactjs:
-        build: .
-        container_name: ReactJS
-        command: npm start
-        volumes:
-            - .:/Website
-        ports:
-            - 3000:3000
-        restart: always
-        stdin_open: true
+    # reactjs:
+    #     build: .
+    #     container_name: ReactJS
+    #     command: npx npm start
+    #     volumes:
+    #         - .:/Website
+    #     ports:
+    #         - 3000:3000
+    #     restart: always
+    #     stdin_open: true
 

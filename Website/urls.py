@@ -14,17 +14,25 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-# Website
+# Project
 from app import views
 
 # Django
 from django.conf import settings
 from django.contrib import admin
-from django.urls import path, re_path
-
-# Python Extended
+from django.urls import include, path, re_path
+from django.views.static import serve
 from cra_helper.views import proxy_cra_requests
+from rest_framework import routers
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
+
+# Django REST API URL Routes
+router = routers.DefaultRouter()
+router.register("pages", views.PageViewSet)
+router.register("images", views.ImageViewSet)
+router.register("users", views.UserViewSet)
 
 # Create URLs for site
 urlpatterns = [
@@ -32,15 +40,31 @@ urlpatterns = [
     # Default index template to render index.html
     path('', views.index),
 
-    # Django-CRA-Helper: Allow Django to pass unknown routes to the client-side router
+    # Django Admin
+    path("django_admin/", admin.site.urls),
+
+    # Django Rest Framework
+    path('api/', include(router.urls)),
+    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+
+    # Whitenoise: Force Serve Media Files... This may be insecure: https://github.com/evansd/whitenoise/issues/62
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}), 
+
+    # Django-CRA-Helper: Allow Django to rest of routes to client-side router
     re_path(r'^.*/$', views.index)
 
 ]
 
 # Django-CRA-Helper: Add a reverse-proxy view to help React in the Django view talk to Create-React-App
+#   - There are some /static/js/*.chunk.js files not getting loaded. This method fixes it, but
+#   it only works because the default django development static server is replaced by whitenoise.
 if settings.DEBUG:
     proxy_urls = [
         re_path(r'^__webpack_dev_server__/(?P<path>.*)$', proxy_cra_requests),
         re_path(r'^(?P<path>.+\.hot-update\.(js|json|js\.map))$', proxy_cra_requests),
+        re_path(r'^sockjs-node/(?P<path>.*)$', proxy_cra_requests),
+        re_path(r'^static/js/(?P<path>.*)$', proxy_cra_requests), # Only works when static file server is disabled
+        re_path(r'^static/media/(?P<path>.*)$', proxy_cra_requests),
     ]
     urlpatterns.extend(proxy_urls)

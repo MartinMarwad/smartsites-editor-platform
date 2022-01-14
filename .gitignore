@@ -1,8 +1,9 @@
 readme.md
+*/readme.md
 
 ## General
+TODO.md
 data 
-.vscode
 .env
 db.sqlite3
 /staticfiles

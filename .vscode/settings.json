@@ -1,0 +1,23 @@
+{
+    // Color Theme: Make Comments Red
+    "editor.tokenColorCustomizations": {
+        "comments": "#FF0000",
+        "textMateRules": [
+            {
+                "scope": "string.quoted.docstring.multi",
+                "settings": {
+                    "foreground": "#FF0000"
+                }
+            },
+            {
+                "scope": "string.quoted.double.block.python",
+                "settings": {
+                    "foreground": "#FF0000"
+                }
+            },
+        ]
+    },
+    
+    "editor.multiCursorModifier": "ctrlCmd",
+    "editor.fontSize": 18,
+}

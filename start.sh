@@ -1,50 +1,93 @@
 #!/bin/bash
 
 # DO NOT use this directly. Use the Makefile or run docker-compose to start project.
-# This script is called from inside docker to start WonderNews. 
+# This script is called from inside docker to start the project. 
 
 echo "[$1] Starting in $1 Mode:"
 
-# Create data director if not already created
-mkdir -p data
-
-# If first time run, install and build NPM modules...
-if [ ! -d ./build ] ; then
-    echo "[$1] Detected first time run. Running NPM protocols..."
-
-    # NPM: Install Dependencies
-    echo "[$1]     - NPM: Installing Dependencies"
-    npm install
-
-    # NPM: Create production ready files
-    echo "[$1]     - NPM: Running build (to generate html/static files)"
-    npm run build
-
+# NODE: Install NPM modules if not installed
+if [ ! -d ./node_modules ] ; then
+    echo "[$1] Node: Detected NPM modules not installed. Installing Dependencies..."
+    npx npm install
 fi
 
-# Django: Make Migrations
-echo "[$1] Django: Making Migrations"
-python3 manage.py makemigrations
+# NODE: Create production build of NPM modules if not built
+if [ ! -d ./build ] ; then
+    echo "[$1] Node: Running NPM production build (to generate html/static files)..."
+    npx npm run build
+fi
 
-# Django: Migrate Database
-echo "[$1] Django: Migrating Database"
-python3 manage.py migrate
 
-# Developement Mode
+# If running in Developement Mode:
 if [ "$1" = "DEVELOPMENT" ]; then
-    
+
+    # Start the react dev server. Edit: Handled by docker-compose
+    npx npm start --stats-error-details &
+
+    # Delay the container from starting for 30 seconds, to let the react dev server to start
+    sleep 30
+
+    # Django: Create database if it doesn't exist.
+    if [ ! -d ./data ] ; then
+
+        # Create data director if not already created
+        echo "[$1] Django: Database not detected. Creating new database now..."
+        mkdir -p data
+
+        # Django: Make Migrations
+        echo "[$1] Django: Making Migrations"
+        python3 manage.py makemigrations
+
+        # Django: Migrate Database
+        echo "[$1] Django: Migrating Database"
+        python3 manage.py migrate
+
+        # Create superuser
+        echo "[$1] Django: Creating superuser with username 'admin' and password 'password'..."
+        echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('admin', 'admin@example.com', 'password')" | python manage.py shell
+
+    fi
+
+    # Finally run development server    
     echo "[$1] Django: Starting DEVELOPMENT server"
     python3 manage.py runserver_plus 0.0.0.0:8000
 
 fi
 
-# Production Mode
+# If running in Production Mode:
 if [ "$1" = "PRODUCTION" ]; then
 
+    # NODE: Create production build of NPM modules 
+    echo "[$1] Node: Running NPM production build (to generate html/static files)..."
+    npx npm run build
+
+    # Django: Create database if it doesn't exist.
+    if [ ! -d ./data ] ; then
+
+        # Create data director if not already created
+        echo "[$1] Django: Database not detected. Creating new database now..."
+        mkdir -p data
+
+        # Django: Make Migrations
+        echo "[$1] Django: Making Migrations"
+        python3 manage.py makemigrations
+
+        # Django: Migrate Database
+        echo "[$1] Django: Migrating Database"
+        python3 manage.py migrate
+
+        # Create superuser
+        echo "[$1] Django: Creating superuser with username 'admin' and password 'password'..."
+        echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('admin', 'admin@example.com', 'password')" | python manage.py shell
+
+    fi
+
+    # Collect Static files
     echo "[$1] Django: Collecting Static Files"
     python3 manage.py collectstatic --noinput
 
+    # Start Gunicorn production server
     echo "[$1] Django: Starting PRODUCTION server"
-    python3 manage.py runserver_plus 0.0.0.0:8000
+    gunicorn Website.wsgi -b 0.0.0.0:8000 --reload --log-level debug --worker-class gevent
 
 fi
