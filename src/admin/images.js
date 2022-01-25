@@ -29,29 +29,10 @@ export const ImageEdit = (props) => (
             <NumberField disabled source="id" />
             <TextInput source="name" />
             <TextInput source="alt" label="Alternate text for the image"/>
-            {/* <ImageField source="image" label="Current image:"/> */}
-
+            <ImageField source="image" label="Current image:"/>
             <ImageInput source="image" label="Or select new image:" accept="image/*">
                 <ImageField source="image" src="image" title="name"  />
             </ImageInput>
-
-            {/* <ImageInput
-                source="data.image"
-                label="Image"
-                accept="image/*"
-                maxSize={5000000}
-                placeholder={
-                  <p>
-                    Upload Image
-                    <span >
-                      *File size should not exceed 5MB
-                    </span>
-                  </p>
-                }
-              >
-                <ImageField source="image" src="image" title="name"  />
-            </ImageInput> */}
-
         </SimpleForm>
     </Edit>
 );

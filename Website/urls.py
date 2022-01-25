@@ -32,6 +32,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 router = routers.DefaultRouter()
 router.register("pages", views.PageViewSet)
 router.register("images", views.ImageViewSet)
+router.register("files", views.FileViewSet)
 router.register("users", views.UserViewSet)
 
 # Create URLs for site

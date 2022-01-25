@@ -17,6 +17,11 @@ class PageAdmin(admin.ModelAdmin):
 class ImageAdmin(admin.ModelAdmin):
     list_display  = ('id', 'name', 'alt', 'image')
 
+# File
+@admin.register(models.File)
+class FileAdmin(admin.ModelAdmin):
+    list_display  = ('id', 'name', 'description', 'file')
+
 
 ## Other
 # @admin.register(models.Author)

@@ -10,6 +10,7 @@ from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from rest_framework import permissions
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
 
 # Python
 import logging
@@ -48,9 +49,16 @@ class ImageViewSet(viewsets.ModelViewSet):
     queryset = models.Image.objects.all()
     serializer_class = serializers.ImageSerializer
 
+# File API
+class FileViewSet(viewsets.ModelViewSet):
+    """API endpoint that allows images to be viewed or edited."""
+    queryset = models.File.objects.all()
+    serializer_class = serializers.FileSerializer
+
 # User API
 class UserViewSet(viewsets.ModelViewSet):
     """API endpoint that allows users to be viewed or edited."""
+    permission_classes = [IsAuthenticated]
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = serializers.UserSerializer
 

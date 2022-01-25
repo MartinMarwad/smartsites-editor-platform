@@ -1,6 +1,9 @@
 // Source: https://github.com/react-page/react-page/tree/master/examples/plugins
 // Contains master list of cell plugin components.
 
+// Project 
+import axios from 'axios';
+
 // React-Page: Offical Plugins
 import background, { ModeEnum } from '@react-page/plugins-background';
 import '@react-page/plugins-background/lib/index.css';
@@ -20,6 +23,7 @@ import AppBar from './layouts/appbar';
 import TwitterTimeline from './twitter_timeline.js';
 import codeSnippet from './code_snippet.js';
 import Divider from './divider';
+import MediaPlayer from './media_player';
 
 // Custom Components: For experiment/development
 import customContentPlugin from './custom/customContentPlugin.js';
@@ -30,18 +34,21 @@ import contactForm from './custom/contactForm.js';
 
 
 // Image Uploading 
-const fakeImageUploadService = (defaultUrl) => (file, reportProgress) => {
+const ImageUploadService = (defaultUrl) => (file, reportProgress) => {
     return new Promise((resolve, reject) => {
-        let counter = 0;
-        const interval = setInterval(() => {
-            counter++;
-            reportProgress(counter * 10);
-            if (counter > 9) {
-                clearInterval(interval);
-                alert('Image has not actually been uploaded to a server. Check documentation for information on how to provide your own upload function.');
-                resolve({ url: URL.createObjectURL(file) });
+        let formData = new FormData();
+        formData.append("name", file.name);
+        formData.append("image", file);
+        axios.post(window.location.origin + '/api/' + 'images/', formData, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('access'),
+                'Content-Type': 'multipart/form-data',
+                'accept': 'application/json',
             }
-        }, 100);
+        }).then((res) => {
+            console.log("ImageUploadService: Uploaded file");
+            resolve({ url: res.data.image }); // window.location.origin + '/media/uploads/images/' + file.name
+        });
     });
 };
 
@@ -64,14 +71,14 @@ const cellPlugins = [
     Divider,
 
     // An image component
-    imagePlugin({ imageUpload: fakeImageUploadService('/images/react.png') }),
+    imagePlugin({ imageUpload: ImageUploadService('/images/react.png') }),
 
     // A video component.
-    video,
+    MediaPlayer,
 
     // A background component
     background({
-        imageUpload: fakeImageUploadService('/images/sea-bg.jpg'),
+        imageUpload: ImageUploadService('/images/react.png'),
         enabledModes:
             ModeEnum.COLOR_MODE_FLAG |
             ModeEnum.IMAGE_MODE_FLAG |
@@ -96,11 +103,11 @@ const cellPlugins = [
     // ------------------------------
     // Custom/Experimental Components
     // ------------------------------
-    html5video,
-    customContentPlugin,
+    // html5video,
+    // customContentPlugin,
     customContentPluginWithListField,
     contactForm,    
-    customLayoutPlugin,
+    // customLayoutPlugin,
     customLayoutPluginWithInitialState,
 
 ];

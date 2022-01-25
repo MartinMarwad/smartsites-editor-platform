@@ -54,6 +54,11 @@ class Image(models.Model):
     # Image file. File will be saved to MEDIA_ROOT / uploads / YEAR / MONTH / DAY
     image = models.ImageField(upload_to ='uploads/images')
 
+    # Timestamps
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
     class Meta:
         verbose_name = "Image"
         verbose_name_plural = "Images"
@@ -62,7 +67,32 @@ class Image(models.Model):
         return self.name 
 
 
-# MediaFile Object
+# File Object
+class File(models.Model):
+    """File model. Provides a file manager for user-uploaded files."""
+
+    # Name of the file
+    name = models.TextField()
+
+    # Description or alternate text for the file
+    description = models.TextField(blank=True, null=True)
+
+    # Image file. File will be saved to MEDIA_ROOT
+    file = models.FileField(upload_to ='uploads/files')
+
+    # Timestamps
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+    class Meta:
+        verbose_name = "File"
+        verbose_name_plural = "Files"
+
+    def __str__(self):
+        return self.name 
+
+
 
 ## Other
 # class Author(models.Model):

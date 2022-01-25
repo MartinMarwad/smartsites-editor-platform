@@ -22,16 +22,21 @@ class PageSerializer(serializers.ModelSerializer):
 
 # Image Serializer
 class ImageSerializer(serializers.ModelSerializer):
-    # image = serializers.ImageField(max_length=None)
     class Meta:
         model = models.Image
         fields = ("id", "name", "alt", "image",)
 
+# File Serializer
+class FileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.File
+        fields = ("id", "name", "description", "file",)
+
 # User Serializer
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['url', 'username', 'email', 'groups']
+        fields = ['id', 'username', 'email', 'is_staff', 'is_active', 'last_login', ]
 
 
 ## Other

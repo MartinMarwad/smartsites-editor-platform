@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 # Imports
 from pathlib import Path
 import os
+import datetime
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -112,6 +113,12 @@ DATABASES = {
 }
 
 
+# Default primary key field type
+# https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
 ## Logging
 # https://docs.djangoproject.com/en/4.0/ref/settings/#logging
 LOGGING = {
@@ -184,6 +191,16 @@ USE_I18N = True
 USE_TZ = True
 
 
+## Media Files
+# https://docs.djangoproject.com/en/dev/ref/settings/#media-url
+
+# URL that handles the media served from MEDIA_ROOT, used for managing stored files. 
+MEDIA_ROOT = DATA_DIR / 'media'
+
+# Absolute filesystem path to the directory that will hold user-uploaded files.
+MEDIA_URL = "/media/"
+
+
 ## Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
@@ -211,41 +228,55 @@ STATICFILES_FINDERS = [
 WHITENOISE_ALLOW_ALL_ORIGINS = True
 WHITENOISE_AUTOREFRESH = True
 
-## Media Files
-# https://docs.djangoproject.com/en/4.0/topics/files/
-
-MEDIA_URL = "/media/"
-
-MEDIA_ROOT = DATA_DIR / 'media'
-
-
 # Django-CRA-Helper: Settings
 CRA_APP_NAME = '.'
 CRA_HOST = 'localhost'  # Host for create-react-app server (inside docker)
 CRA_PORT = 3000         # Port for create-react-app server (inside docker)
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 # Django REST Framework
 # https://github.com/encode/django-rest-framework
+
+# JWT Settings
+SIMPLE_JWT = {
+
+    # How long the original token is valid for. Setting it for 2 hours.
+    "ACCESS_TOKEN_LIFETIME": datetime.timedelta(hours=2),
+
+}
+
+# REST Settings
 REST_FRAMEWORK = {
+
+    # The default class to use for queryset pagination.
     'DEFAULT_PAGINATION_CLASS': 'app.pagination.PageNumberWithPageSizePagination',
     'PAGE_SIZE': 10,
+
+    # A list of filter backend classes that should be used for generic filtering.
     'DEFAULT_FILTER_BACKENDS': [
         'rest_framework.filters.OrderingFilter',
         'django_filters.rest_framework.DjangoFilterBackend',
         'rest_framework.filters.SearchFilter',
     ],
+
+    # A list or tuple of authentication classes, that determines the default set of authenticators 
+    # used when accessing the request.user or request.auth properties.
     'DEFAULT_AUTHENTICATION_CLASSES': [
         # SessionAuthentication is intentionally removed, see: https://github.com/encode/django-rest-framework/issues/6104'
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+
+    # A list or tuple of permission classes, that determines the default set of permissions checked at the start of a view.
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ],
+
+    # A list or tuple of parser classes, that determines the default set of parsers used when accessing the request.data property.
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.MultiPartParser',
+        'rest_framework.parsers.FormParser',
     ]
+
 }
