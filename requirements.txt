@@ -12,8 +12,9 @@ django-filter                           # https://github.com/carltongibson/djang
 django-extensions                       # https://github.com/django-extensions/django-extensions
 Werkzeug                                # https://github.com/pallets/werkzeug
 django-environ                          # https://github.com/joke2k/django-environ
-psycopg2                                # https://github.com/psycopg/psycopg2/
+psycopg2-binary                         # https://github.com/psycopg/psycopg2/
 django-db-logger                        # https://github.com/CiCiUi/django-db-logger
+django-dynamic-preferences              # https://github.com/agateblue/django-dynamic-preferences
 
 # Webserver & Static files
 django-hosts                            # https://github.com/jazzband/django-hosts

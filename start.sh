@@ -1,7 +1,9 @@
 #!/bin/bash
 
 # DO NOT use this directly. Use the Makefile or run docker-compose to start project.
-# This script is called from inside docker to start the project. 
+# This script is called from inside docker to start the project.
+
+source $NVM_DIR/nvm.sh
 
 echo "[$1] Starting in $1 Mode:"
 

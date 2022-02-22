@@ -2,10 +2,10 @@
 // React
 import React from "react";
 import { Create, Datagrid, Edit, EditButton, List, Resource, ShowButton, SimpleForm, TextField, TextInput, ImageField, NumberField } from "react-admin";
-import { RaReactPageInput, RaSelectReferenceInputField, } from "@react-page/react-admin";
+// import { RaReactPageInput, RaSelectReferenceInputField, } from "@react-page/react-admin";
 
 // Local
-import Plugins from "../plugins";
+// import Plugins from "../../plugins";
 
 
 const PageList = (props) => {
@@ -28,7 +28,7 @@ export const PageEdit = (props) => (
             <NumberField disabled source="id" />
             <TextInput source="title" label="Title of the page." />
             <TextInput source="url" label="Relative URL of the page."/>
-            <RaReactPageInput source="content" label="Content of the page." cellPlugins={Plugins} />
+            {/* <RaReactPageInput source="content" label="Content of the page." cellPlugins={Plugins} /> */}
         </SimpleForm>
     </Edit>
 );
@@ -39,7 +39,7 @@ export const PageCreate = (props) => (
             <NumberField source="id" />
             <TextInput source="title" label="Title of the page."/>
             <TextInput source="url" label="Relative URL of the page."/>
-            <RaReactPageInput source="content" label="Content of the page." cellPlugins={Plugins} />
+            {/* <RaReactPageInput source="content" label="Content of the page." cellPlugins={Plugins} /> */}
         </SimpleForm>
     </Create>
 );

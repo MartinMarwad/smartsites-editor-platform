@@ -2,8 +2,8 @@
 // React
 import React from "react";
 import { Create, Datagrid, Edit, EditButton, List, Resource, ShowButton, SimpleForm, } from "react-admin";
-import { TextField, EmailField, NumberField, DateField, BooleanField } from "react-admin";
-import { TextInput, EmailInput, DateInput, BooleanInput } from "react-admin";
+import { TextField, ImageField, EmailField, NumberField, DateField, BooleanField } from "react-admin";
+import { TextInput, ImageInput, EmailInput, DateInput, BooleanInput } from "react-admin";
 
 // Local
 

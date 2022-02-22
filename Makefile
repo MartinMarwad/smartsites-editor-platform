@@ -39,8 +39,8 @@ logs:
 	@docker-compose logs -f 
 
 # Run container without executing startup 
-run: # Run an anonymous command like exe="my_cammnd -whatever"
-	@docker-compose run django $(exe)
+exec: # Run an anonymous command like exe="my_cammnd -whatever"
+	@docker-compose run django bash $(exe)
 
 # Open terminal in container.
 bash:
