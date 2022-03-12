@@ -1,46 +1,73 @@
 
 // React
 import React from 'react';
-import { Admin, Resource} from 'react-admin';
-import simpleRestProvider from 'ra-data-simple-rest';
+import { Admin, Resource, ListGuesser } from 'react-admin';
+import { Notification } from 'react-admin';
 import drfProvider, { jwtTokenAuthProvider, fetchJsonWithAuthJWTToken } from 'ra-data-django-rest-framework';
 import { Helmet } from 'react-helmet'
 import { Route } from 'react-router-dom';
 
+// MUI
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from "@material-ui/styles";
+import { createTheme } from "@material-ui/core";
+
 // Layout
-import Editor from '../editor';
-import Layout from './layout';
+// import Layout from './layout';
+import Dashboard from './dashboard';
 
-// Data views
-import pages from './views/pages';
-import images from './views/images';
-import files from './views/files';
-import users from './views/users';
-
-import { createTheme } from '@material-ui/core/styles';
-
-const theme = createTheme({
-  palette: {
-    type: 'dark', // Switching the dark mode on is a single property value change.
-  },
-});
+// Resource Data Views
+import pages from './views/page';
+import files from './views/file';
+import users from './views/user';
+import notifications from './views/notification';
 
 
+// Theme
+const baseTheme = createTheme();
+
+// Create an empty shell page, so that individual pages can render their own custom layouts
+const EmptyLayout = ({themeOld, title, children}) => {
+    return (
+        <ThemeProvider theme={baseTheme}>
+            <CssBaseline />
+                <main id="main-content">
+                    {children}
+                </main>
+            <Notification />
+        </ThemeProvider>
+    );
+};
 
 // React Admin Component
 export default function ReactAdmin() {
     const authProvider = jwtTokenAuthProvider({obtainAuthTokenUrl: "/api/token/"});
     const dataProvider = drfProvider("/api", fetchJsonWithAuthJWTToken);
 
-    // authProvider={authProvider}
-    // layout={Layout} 
+    const dash = () => (
+        <EmptyLayout>
+            <Dashboard/>
+        </EmptyLayout>
+    )
+
     return(
-        <Admin layout={Layout}  authProvider={authProvider} dataProvider={dataProvider} title="AdminX" disableTelemetry>
+        <Admin title="Admin" 
+            // theme={defaultTheme}
+            dashboard={Dashboard}
+            layout={EmptyLayout}
+            authProvider={authProvider} 
+            dataProvider={dataProvider} 
+            customRoutes={[
+                <Route exact path="/" component={dash} />,
+                <Route exact path="/bar" component={Dashboard} />,
+            ]} 
+            disableTelemetry
+        >
             <Helmet><title>React Admin</title></Helmet>
             <Resource name="pages" {...pages} />
-            <Resource name="images" {...images} />
             <Resource name="files" {...files} />
             <Resource name="users" {...users} />
+            <Resource name="notifications" {...notifications}/>
         </Admin>
     );
 }

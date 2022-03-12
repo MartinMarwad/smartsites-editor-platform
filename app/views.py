@@ -11,6 +11,7 @@ from rest_framework import viewsets
 from rest_framework import permissions
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
+from django_db_logger.models import StatusLog
 
 # Python
 import logging
@@ -62,6 +63,12 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = serializers.UserSerializer
 
+# Notification API
+class NotificationViewSet(viewsets.ModelViewSet):
+    """API endpoint that allows users to be viewed or edited."""
+    permission_classes = [IsAuthenticated]
+    queryset = StatusLog.objects.all().order_by('-create_datetime')
+    serializer_class = serializers.NotificationSerializer
 
 # ## 
 # class TagViewSet(viewsets.ModelViewSet):

@@ -8,16 +8,18 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get upgrade -y && apt-get install -y curl sudo
 
+# Create User with Sudo Permissions
+RUN adduser --disabled-password --gecos '' ubuntu
+RUN adduser ubuntu sudo
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+USER ubuntu
+WORKDIR /home/ubuntu/Website
+ENV WORKDIR=/home/ubuntu/Website
+
 # Install: Python
 ENV PYTHONUNBUFFERED 1
-RUN apt-get install -y python3 python3-pip python3-dev
-RUN ln -sf /usr/bin/python3 /usr/bin/python && ln -sf /usr/bin/pip3 /usr/bin/pip
-
-# Create User
-RUN useradd -rm -d /home/ubuntu -s /bin/bash -g root -G sudo -u 1001 ubuntu
-USER ubuntu
-WORKDIR /home/ubuntu/Website 
-ENV WORKDIR=/home/ubuntu/Website
+RUN sudo apt-get install -y python3 python3-pip python3-dev
+RUN sudo ln -sf /usr/bin/python3 /usr/bin/python && sudo ln -sf /usr/bin/pip3 /usr/bin/pip
 
 # Install: Node
 ENV NODE_VERSION=v16.14.0

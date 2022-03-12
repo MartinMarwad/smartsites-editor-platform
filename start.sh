@@ -1,11 +1,15 @@
 #!/bin/bash
 
 # DO NOT use this directly. Use the Makefile or run docker-compose to start project.
-# This script is called from inside docker to start the project.
-
-source $NVM_DIR/nvm.sh
+# This script is called from inside docker as an entrypoint to start the project.
 
 echo "[$1] Starting in $1 Mode:"
+
+# Fix any potential user-permission errors
+# sudo chown ubuntu -R *
+
+# Load NPM executables
+source $NVM_DIR/nvm.sh
 
 # NODE: Install NPM modules if not installed
 if [ ! -d ./node_modules ] ; then
@@ -18,7 +22,6 @@ if [ ! -d ./build ] ; then
     echo "[$1] Node: Running NPM production build (to generate html/static files)..."
     npx npm run build
 fi
-
 
 # If running in Developement Mode:
 if [ "$1" = "DEVELOPMENT" ]; then

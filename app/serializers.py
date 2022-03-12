@@ -7,6 +7,7 @@ from app import filters
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 from drf_extra_fields.fields import Base64ImageField
+from django_db_logger.models import StatusLog
 
 # Python
 import json
@@ -37,6 +38,12 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'is_staff', 'is_active', 'last_login', ]
+        
+# Notification Serializer
+class NotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StatusLog
+        fields = ['id', 'logger_name', 'level', 'msg', 'trace', 'create_datetime', ]
 
 
 ## Other

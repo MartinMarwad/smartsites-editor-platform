@@ -6,13 +6,14 @@ import { BrowserRouter, Routes, Route, Outlet, Link } from "react-router-dom-v6"
 import { Helmet } from 'react-helmet'
 
 // React Material 
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
 // Project
 import reportWebVitals from './reportWebVitals';
 // import './index.css'
 import Admin from './admin';
-import App from './editor';
+// import App from './editor';
 
 // Django-CRA-Helper: Inject Properties
 window.component = window.component || 'App';
@@ -40,15 +41,16 @@ function Router(props) {
         <BrowserRouter>
             <CssBaseline />
             <Routes>
-                <Route path="/admin" element={<Admin />} />
-                <Route path="*" element={<App/>} />
+                <Route path="/" element={<div>Hello from a new blank page!</div>} />
+                <Route path="admin" element={<Admin />} />
             </Routes>
         </BrowserRouter>
     );
 }
 
+
 // React the component as usual
-ReactDOM.render(React.createElement(Router, window.props), window.reactRoot, );
+ReactDOM.render(React.createElement(Admin, window.props), window.reactRoot, );
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

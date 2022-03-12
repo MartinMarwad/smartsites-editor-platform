@@ -31,9 +31,10 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 # Django REST API URL Routes
 router = routers.DefaultRouter()
 router.register("pages", views.PageViewSet)
-router.register("images", views.ImageViewSet)
+# router.register("images", views.ImageViewSet)
 router.register("files", views.FileViewSet)
 router.register("users", views.UserViewSet)
+router.register("notifications", views.NotificationViewSet)
 
 # Create URLs for site
 urlpatterns = [
