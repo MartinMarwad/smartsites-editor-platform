@@ -42,13 +42,15 @@ import Close from "@mui/icons-material/Close";
 import Appbar from './appbar';
 import Sidebar from './sidebar';
 import RightSideToolbar from './toolbar';
+import RenderNode from '../../plugins/PluginNode';
 
 // Plugins
-import { Button } from '../../plugins/Button';
-import { Card, CardBottom, CardTop } from '../../plugins/Card';
-import { Container } from '../../plugins/Container';
-import { Text } from '../../plugins/Text';
-
+import Plugins from '../../plugins';
+// import { Button } from '../../plugins/Button';
+// import { Card, CardBottom, CardTop } from '../../plugins/Card';
+// import { Container } from '../../plugins/Container';
+// import { Text } from '../../plugins/Text';
+// import { Page } from '../../plugins/Layouts/Page';
 
 // Theme
 const theme = createTheme({
@@ -84,41 +86,47 @@ export default function Layout({ title="[Title Not Set]", editor=false, children
                     variant: "permanent",
                     width: 250,
                     collapsible: true,
-                    collapsedWidth: 0, // 60,
-                    // uncollapsedOnHover: true,
+                    collapsedWidth: 60,
+                    uncollapsedOnHover: true,
+                    // headerMagnetEnabled: true,
                 },
             },
         },
     };
 
     return (
-  
-            <Root scheme={scheme}>
-                <Helmet><title>{title}</title></Helmet>
-                <Editor resolver={{ Card, Button, Text, Container, CardTop, CardBottom, }}>
-                    <SnackbarProvider maxSnack={10} anchorOrigin={{vertical:'bottom',horizontal:'center',}} TransitionComponent={Grow}>
-                        <Header>
-                            <Appbar title={title} editor={editor}/>
-                        </Header>
+        <Root scheme={scheme}>
+            <Helmet><title>{title}</title></Helmet>
+            <SnackbarProvider maxSnack={10} anchorOrigin={{ vertical: 'bottom', horizontal: 'center', }} TransitionComponent={Grow}>
+                <Editor
+                    // resolver={{ Card, Button, Text, Container, CardTop, CardBottom, Page }}
+                    resolver={Plugins}
+                    onRender={RenderNode}
+                >
+        
+                    <Header>
+                        <Appbar title={title} editor={editor} />
+                    </Header>
 
-                        <EdgeSidebar anchor="left">
-                            <Sidebar editor={editor}/>
-                        </EdgeSidebar>
+                    <EdgeSidebar anchor="left">
+                        <Sidebar editor={editor} />
+                    </EdgeSidebar>
 
-                        {editor
-                            ?
-                            <Content sx={{ mt: -5, p: 4, bgcolor: '#f1f3f4', minHeight: '93vh' }}>
-                                {children}
-                            </Content>
-                            :
-                            <Content sx={{ p: 4, bgcolor: '#f1f3f4', minHeight: '93vh' }}>
-                                {children}
-                            </Content>
-                        }
+                    <Content sx={{ 
+                        p: 3, 
+                        bgcolor: '#f1f3f4', 
+                        minHeight: '93vh', 
 
-                        {editor && RightSideToolbar(scheme)}
-                    </SnackbarProvider>
+                        pt: editor ? 9 : 4, 
+                        mt: editor ? -2 : 0,
+                    }}>
+                        {children}
+                    </Content>
+
+                    {editor && RightSideToolbar(scheme)}
+
                 </Editor>
-            </Root>
+            </SnackbarProvider>
+        </Root>
     );
 };

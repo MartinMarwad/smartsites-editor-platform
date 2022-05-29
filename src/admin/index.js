@@ -52,14 +52,11 @@ export default function ReactAdmin() {
 
     return(
         <Admin title="Admin" 
-            // theme={defaultTheme}
-            dashboard={Dashboard}
             layout={EmptyLayout}
             authProvider={authProvider} 
             dataProvider={dataProvider} 
             customRoutes={[
                 <Route exact path="/" component={dash} />,
-                <Route exact path="/bar" component={Dashboard} />,
             ]} 
             disableTelemetry
         >

@@ -10,6 +10,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 // Local
 import Layout from '../../layout';
+import Plugins from '../../../plugins';
+
 
 const theme = createTheme();
 
@@ -29,20 +31,23 @@ const PageList = (props) => {
     );
 };
 
-const LoadFrame = () => {
-    const record = useRecordContext();
-    if (!record) return null;
-    return <Frame data={record.content} />
-}
+export const PageEdit = (props) => {
 
-export const PageEdit = (props) => (
-    <Edit {...props}>
-        <Layout title="Edit Page" editor={true}>
-            <LoadFrame/>
-            {/* <Frame></Frame> */}
-        </Layout>
-    </Edit>
-);
+    // Helper function to access the React-Admin context to give to Craft.js
+    const LoadFrame = () => {
+        const record = useRecordContext();
+        if (!record) return null;
+        return <Frame data={record.content}/>
+    }
+
+    return (
+        <Edit {...props}>
+            <Layout title="Edit Page" editor={true}>
+                <LoadFrame />
+            </Layout>
+        </Edit>
+    );
+}
 
 export const PageCreate = (props) => (
     <Layout title="Create Page">

@@ -21,14 +21,14 @@ export default function ComponentsPanel() {
     const { connectors } = useEditor();
     const [pluginsList, setPluginsList] = React.useState(Plugins);
 
-    const ListPluginItem = ({ name, component }) => (
+    const ListPluginItem = ({ plugin }) => (
         <ListItemButton
-            ref={(ref) => connectors.create(ref, component)}
-            data-cy={`toolbox-${name.toLowerCase()}`}
-            key={name.toLowerCase()}
+            ref={(ref) => connectors.create(ref, React.createElement(plugin))}
+            data-cy={`toolbox-${plugin.craft.displayName.toLowerCase()}`}
+            key={plugin.craft.displayName.toLowerCase()}
         >
-            <ListItemIcon><Avatar>{name.charAt(0)}</Avatar></ListItemIcon>
-            <ListItemText primary={name} />
+            <ListItemIcon><Avatar>{plugin.craft.displayName.charAt(0)}</Avatar></ListItemIcon>
+            <ListItemText primary={plugin.craft.displayName} secondary={plugin.craft.description}/>
         </ListItemButton>
     );
 
@@ -38,7 +38,7 @@ export default function ComponentsPanel() {
         // If input
         if ( filter_text ) {
             const newList = pluginsList.filter((plugin) => 
-                plugin.name.toLowerCase().indexOf(filter_text.toLowerCase()) > -1
+                plugin.craft.displayName.toLowerCase().indexOf(filter_text.toLowerCase()) > -1
             );
             setPluginsList(newList);
         }
@@ -50,14 +50,14 @@ export default function ComponentsPanel() {
     }
 
     return (
-        <Box >
-            <TextField variant="filled" size="small" sx={{ width: '100%' }} 
+        <Box sx={{ p: 2, }} >
+            <TextField variant="outlined" size="small" sx={{ width: '100%' }} 
                 label="Drag to add or type here to search." 
                 onChange={(event) => {sortPluginList(event.target.value)}}
             />
             <List component="nav" sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                {pluginsList.map((plugin, index) => 
-                    <ListPluginItem key={index} name={plugin.name} component={plugin.component}/>
+                {Object.entries(pluginsList).map((key, index) => 
+                    !key[1].craft.hidden && <ListPluginItem key={index} plugin={key[1]}/>
                 )}
             </List>
         </Box>

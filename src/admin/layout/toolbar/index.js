@@ -34,6 +34,7 @@ export default function RightSideToolbar(scheme) {
                 width: 350,
                 collapsible: true,
                 collapsedWidth: 0,
+                // headerMagnetEnabled: true,
             },
         },
     };
@@ -49,7 +50,7 @@ export default function RightSideToolbar(scheme) {
     return (
         <EdgeSidebar anchor="right">
             <SidebarContent>
-                <Box sx={{ width: '100%' }}>
+                <Box sx={{ width: '100%', marginTop: 0, overflowY: 'scroll', height: '93vh' }}>
                     <TabContext value={value}>
                         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                             <TabList onChange={handleChange} aria-label="toolbar-tabs" centered>
@@ -58,14 +59,14 @@ export default function RightSideToolbar(scheme) {
                                 <Tab label="Components" value="3" />
                             </TabList>
                         </Box>
-                        <TabPanel value="1" sx={{ p: 1, }}>
+                        <TabPanel value="1" sx={{ p: 0, }}>
                             <LayersPanel/>
                         </TabPanel>
-                        <TabPanel value="2" sx={{ p: 1, }}>
+                        <TabPanel value="2" sx={{ p: 0, }}>
                             <SettingsPanel />
                         </TabPanel>
-                        <TabPanel value="3" sx={{ p: 1, }}>
-                            <ComponentsPanel />
+                        <TabPanel value="3" sx={{ p: 0, }}>
+                            <ComponentsPanel/>
                         </TabPanel>
                     </TabContext>
                 </Box>

@@ -1,23 +1,41 @@
-import { Button } from '../plugins/Button';
-import { Card, CardBottom, CardTop } from '../plugins/Card';
-import { Container } from '../plugins/Container';
-import { Text } from '../plugins/Text';
 
+// Main Components
+import Button from './Button';
+import { Card, CardBottom, CardTop } from './Card';
+import { Text } from './Text';
 
-const Plugins = [
+import Grid from './Grid';
+import Appbar from './Appbar';
 
-    // Button plugin
-    { name: "Button", component: <Button/> },
+// Internal Layout Components
+import Page from './Page';
+import Header from './Page/Header';
+import Footer from './Page/Footer';
+import Container from './Page/Container';
 
-    // Card plugin
-    { name: "Card", component: <Card/> },
+const Plugins = {
 
-    // Container plugin
-    { name: "Container", component: <Container/> },
+    // Page: Main component of any webpage.
+    Page,
+    Header,
+    Container,
+    Footer,
 
-    // Text plugin
-    { name: "Text", component: <Text/> },
+    // Temp
+    Grid,
+    Appbar,
 
-];
+    // Button: Simple button component.
+    Button,
+
+    // Card Components
+    Card,
+    CardTop,
+    CardBottom,
+
+    // Text: Simple text edit component.
+    Text,
+
+};
 
 export default Plugins;

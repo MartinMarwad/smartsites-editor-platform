@@ -11,32 +11,27 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
+import Divider from '@mui/material/Divider';
+
+// Local
+// import AccordionGroup from '../../../../plugins/AccordionGroup';
+// import AccordionSection from '../../../../plugins/AccordionSection';
 
 
-// import { ToolbarItem } from './accordian/ToolbarItem';
-// import { ToolbarSection } from './accordian/ToolbarSection';
-
-
-const CardMessage = () => (
-    <div>
-        <Card variant="outlined" sx={{ m: 3, }}>
-            <CardContent>
-                <Typography sx={{ fontSize: 18, }} color="text.secondary" gutterBottom>
-                    Click on a component to start editing.
-                </Typography>
-            </CardContent>
-        </Card>
+const CardMessage = () => {
+    return (
         <div>
-            {/* <ToolbarSection
-                title="Typography"
-                props={['fontSize', 'fontWeight', 'textAlign']}
-                summary={({ fontSize, fontWeight, textAlign }) => {
-                    return `0px, 0px, 0px`;
-                }}
-            ></ToolbarSection> */}
+            <Card variant="outlined" sx={{ m: 3, borderRadius: 5, }}>
+                <CardContent>
+                    <Typography sx={{ fontSize: 18, }} color="text.secondary" gutterBottom>
+                        Click on a component to start editing.
+                    </Typography>
+                </CardContent>
+            </Card>
         </div>
-    </div>
-);
+    )
+};
 
 // Settings Panel: Panel to manage plugin settings.
 export default function SettingsPanel() {
@@ -48,9 +43,7 @@ export default function SettingsPanel() {
             selected = {
                 id: currentNodeId,
                 name: state.nodes[currentNodeId].data.name,
-                settings:
-                    state.nodes[currentNodeId].related &&
-                    state.nodes[currentNodeId].related.settings,
+                settings: state.nodes[currentNodeId].related && state.nodes[currentNodeId].related.sidebar,
                 isDeletable: query.node(currentNodeId).isDeletable(),
             };
         }
@@ -62,41 +55,10 @@ export default function SettingsPanel() {
     });
 
     return isEnabled && selected ? (
-        <Box bgcolor="rgba(0, 0, 0, 0.06)" mt={2} px={2} py={2}>
+        <Box>
             <Grid container direction="column" spacing={0}>
-                <Grid item>
-                    <Box pb={2}>
-                        <Grid container alignItems="center">
-                            <Grid item xs>
-                                <Typography variant="subtitle1">Selected</Typography>
-                            </Grid>
-                            <Grid item>
-                                <Chip
-                                    size="small"
-                                    color="primary"
-                                    label={selected.name}
-                                    data-cy="chip-selected"
-                                />
-                            </Grid>
-                        </Grid>
-                    </Box>
-                </Grid>
-                <div data-cy="settings-panel">
-                    {selected.settings && React.createElement(selected.settings)}
-                </div>
-                <div>
-                    {selected.isDeletable ? (
-                        <Button
-                            variant="outlined"
-                            onClick={() => {
-                                actions.delete(selected.id);
-                            }}
-                        >
-                            Delete
-                        </Button>
-                    ) : null}
-                </div>
+                {selected.settings && React.createElement(selected.settings)}
             </Grid>
         </Box>
-    ) : <CardMessage/>;
+    ) : <CardMessage />;
 };
