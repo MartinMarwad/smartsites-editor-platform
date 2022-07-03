@@ -94,93 +94,69 @@ export default function GridSettings() {
                 <Divider/>
 
                 {/* spacing */}
-                <AccordionSection title="Spacing" secondary={
-                    <><Chip label={`Row: ${props.rowSpacing}`}/><Chip label={`Col: ${props.columnSpacing}`}/></>
-                }>
-
-                    {/* rowSpacing */}
+                <AccordionSection title="Spacing" secondary={<Chip label={`${props.spacing}, ${props.rowSpacing}, ${props.columnSpacing}`}/>}>
                     <Grid container spacing={2} alignItems="center">
-                        <Grid item><Typography gutterBottom>Row</Typography></Grid>
-                        <Grid item xs>
-                            <FormControl component="fieldset">
-                                <Slider
-                                    value={typeof props.rowSpacing === 'number' ? props.rowSpacing : 0}
-                                    onChange={(event, newValue) => setProp((props) => (props.rowSpacing = newValue))}
-                                    step={1}
-                                    min={0}
-                                    max={25}
-                                    valueLabelDisplay="auto"
-                                    aria-label="Small"
-                                    aria-labelledby="grid-settings-general-spacing-rowspacing"
-                                />
-                            </FormControl>
+
+                        {/* spacing */}
+                        <Grid item xs={12}>
+                            <TextField
+                                id="component-spacing"
+                                label="Spacing"
+                                variant="outlined"
+                                value={props.spacing}
+                                onChange={(event) => {
+                                    setProp((props) => (props.spacing = Number(event.target.value)))
+                                }}
+                                inputProps={{
+                                    step: 1,
+                                    min: 0,
+                                    max: 500,
+                                    type: 'number',
+                                }}
+                                sx={{width: '100%'}}
+                            />
                         </Grid>
-                        <Grid item>
-                            <FormControl component="fieldset">
-                                <Input
-                                    value={props.rowSpacing}
-                                    size="small"
-                                    onChange={(event) => {
-                                        setProp((props) => (props.rowSpacing = Number(event.target.value)))
-                                    }}
-                                    inputProps={{
-                                        step: 1,
-                                        min: 0,
-                                        max: 25,
-                                        type: 'number',
-                                        'aria-labelledby': 'grid-settings-general-spacing-rowspacing',
-                                    }}
-                                />
-                            </FormControl>
+
+                        {/* rowSpacing */}
+                        <Grid item xs={6}>
+                            <TextField
+                                id="component-spacing-rowSpacing"
+                                label="Row Spacing"
+                                variant="outlined"
+                                value={props.rowSpacing}
+                                onChange={(event) => {
+                                    setProp((props) => (props.rowSpacing = Number(event.target.value)))
+                                }}
+                                inputProps={{
+                                    step: 1,
+                                    min: 0,
+                                    max: 500,
+                                    type: 'number',
+                                }}
+                                sx={{width: '100%'}}
+                            />
+                        </Grid>
+
+                        {/* columnSpacing */}
+                        <Grid item xs={6}>
+                            <TextField
+                                id="component-spacing-columnSpacing"
+                                label="Column Spacing"
+                                variant="outlined"
+                                value={props.columnSpacing}
+                                onChange={(event) => {
+                                    setProp((props) => (props.columnSpacing = Number(event.target.value)))
+                                }}
+                                inputProps={{
+                                    step: 1,
+                                    min: 0,
+                                    max: 500,
+                                    type: 'number',
+                                }}
+                                sx={{width: '100%'}}
+                            />
                         </Grid>
                     </Grid>
-
-                    {/* columnSpacing */}
-                    <Grid container spacing={2} alignItems="center">
-                        <Grid item><Typography gutterBottom>Column</Typography></Grid>
-                        <Grid item xs>
-                            <FormControl component="fieldset">
-                                <Slider
-                                    value={typeof props.columnSpacing === 'number' ? props.columnSpacing : 0}
-                                    onChange={(event, newValue) => setProp((props) => (props.columnSpacing = newValue))}
-                                    step={1}
-                                    min={0}
-                                    max={25}
-                                    valueLabelDisplay="auto"
-                                    aria-label="Small"
-                                    aria-labelledby="grid-settings-general-spacing-columnspacing"
-                                />
-                            </FormControl>
-                        </Grid>
-                        <Grid item>
-                            <FormControl component="fieldset">
-                                <Input
-                                    value={props.columnSpacing}
-                                    size="small"
-                                    onChange={(event) => {
-                                        setProp((props) => (props.columnSpacing = Number(event.target.value)))
-                                    }}
-                                    onBlur={() => {
-                                        if (props.columnSpacing < 0) {
-                                            setProp((props) => (props.columnSpacing = 0));
-                                        } else if (props.columnSpacing > 100) {
-                                            setProp((props) => (props.columnSpacing = 100));
-                                        }
-                                    }}
-                                    inputProps={{
-                                        step: 1,
-                                        min: 0,
-                                        max: 25,
-                                        type: 'number',
-                                        'aria-labelledby': 'grid-settings-general-spacing-columnspacing',
-                                    }}
-                                />
-                            </FormControl>
-                        </Grid>
-                    </Grid>
-
-
-                    
                 </AccordionSection>
 
             </AccordionGroup>

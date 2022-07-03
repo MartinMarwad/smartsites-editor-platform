@@ -7,7 +7,7 @@ import Grid from '@mui/material/Grid';
 
 // Local
 // import { Container, ContainerSettings, ContainerDefaultProps, } from '../Layouts/Container';
-import { Text } from '../Text';
+import Text from '../TextBox';
 import Button from '../Button';
 
 

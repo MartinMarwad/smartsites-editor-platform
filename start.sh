@@ -93,7 +93,7 @@ if [ "$1" = "PRODUCTION" ]; then
 
     # Start Gunicorn production server
     echo "[$1] Django: Starting PRODUCTION server"
-    gunicorn Website.wsgi -b 0.0.0.0:8000 --reload --log-level debug --worker-class gevent --keep-meta-shutdown # --keep-meta-shutdown because https://github.com/django-extensions/django-extensions/issues/1715
+    gunicorn Website.wsgi -b 0.0.0.0:8000 --reload --log-level debug --worker-class gevent # --keep-meta-shutdown because https://github.com/django-extensions/django-extensions/issues/1715
 
 
 fi

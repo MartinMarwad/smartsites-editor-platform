@@ -1,12 +1,6 @@
 
 // React
 import React from 'react';
-import { useNode } from '@craftjs/core';
-
-// MUI
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import MuiButton from '@mui/material/Button';
 
 // Local
 import Button from './component';

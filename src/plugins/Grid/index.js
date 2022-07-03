@@ -1,11 +1,6 @@
 
 // React
 import React from 'react';
-import { useNode } from '@craftjs/core';
-
-// MUI
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
 
 // Local
 import GridPlugin from './component';
@@ -27,8 +22,10 @@ GridPlugin.craft = {
         canDelete: true,
     },
     rules: {
-        canDrag: true,
-        canMoveIn: (incomingNodes) => incomingNodes.every((incomingNode) => true),
+        canDrag: () => true,
+        canDrop: () => true,
+        canMoveIn: () => true,
+        canMoveOut: () => true,
     },
 };
 

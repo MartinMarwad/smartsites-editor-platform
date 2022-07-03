@@ -36,20 +36,18 @@ import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined';
+import SettingsIcon from '@mui/icons-material/Settings';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 // Local
 import PluginModal from './PluginModal';
 
 
 const RenderNode = ({ render }) => {
-
     const { id } = useNode();
     const currentRef = useRef();
 
-    // const { actions, query, isActive } = useEditor((_, query) => ({
-    //     isActive: query.getEvent('selected').contains(id),
-    // }));
-
+    // Note to self: Use this approach over the one below.
     const { actions, query, plugin, isActive, isEnabled } = useEditor((state, query) => {
         const currentNodeId = query.getEvent('selected').last();
         let plugin;
@@ -75,10 +73,10 @@ const RenderNode = ({ render }) => {
         };
     });
 
+    // Note to self: Move away from this approach and use one above.
     const { connectors: { connect, drag }, selected, hovered, dom, name, moveable, deletable, parent, props, data } = useNode((node) => ({
         selected: node.events.selected,
         data: node.data.custom,
-
         hovered: node.events.hovered,
         dom: node.dom,
         name: node.data.custom.displayName || node.data.displayName,
@@ -96,18 +94,22 @@ const RenderNode = ({ render }) => {
                 dom.style.borderColor = '#4285f4';
                 dom.style.borderWidth = "2px";
                 dom.style.cursor = "move";
+                // dom.style.filter = 'drop-shadow(8px 8px 10px gray)';
+                dom.style.boxShadow = '0px 0px 10px 5px #BFBFBF';
             } else if ( hovered ) {
                 dom.style.borderStyle = 'dashed';
                 dom.style.borderColor = '#4285f4';
                 dom.style.borderWidth = "1px";
                 dom.style.cursor = "move";
-            }
-            else {
-                dom.style.borderStyle = 'none';
+                // dom.style.filter = 'drop-shadow(8px 8px 10px gray)';
+                dom.style.boxShadow = '0px 0px 5px 5px #BFBFBF';
+            } else {
+                dom.style.borderStyle = 'unset';
                 dom.style.cursor = "auto";
                 // dom.style.borderWidth = "0px";
+                // dom.style.filter = 'unset';
+                dom.style.boxShadow = 'unset';
             }
-            
         }
     }, [dom, isActive, hovered]);
 
@@ -196,7 +198,7 @@ const RenderNode = ({ render }) => {
                                         <ListItemButton ref={drag} sx={{ cursor: 'move'}}>
                                             <ListItemText primary={
                                                 <Typography variant="h6" component="div">
-                                                    {plugin.displayName}
+                                                    {name}
                                                 </Typography>
                                             }/>
                                         </ListItemButton>
@@ -226,8 +228,30 @@ const RenderNode = ({ render }) => {
                                             <IconButton size="small">
                                                 <ContentCopyOutlinedIcon />
                                             </IconButton>
-                                        </Tooltip>
+                                        </Tooltip> ContentCopyIcon
                                     } */}
+
+                                    <Tooltip title="Duplicate">
+                                        <IconButton 
+                                            size="small" aria-label="delete"
+                                            onClick={() => { 
+                                                const {id: nodeId, data: {type, props, parent: parentId}} = query.node(id).get();
+                                                const prevIndex = query.getSerializedNodes().ROOT.nodes.indexOf(nodeId);
+
+                                                actions.add(query.createNode(React.createElement(type, props)), parentId, prevIndex - 1);
+
+                                                // const { data: {type, props}} = query.node(id).get();
+                                                // actions.add(
+                                                //     query.createNode(React.createElement(type, props)),
+                                                //     // query.node(id).get().parent,
+                                                // );
+                                          
+                                                // actions.selectNode(parent); 
+                                            }}
+                                        >
+                                            <ContentCopyIcon />
+                                        </IconButton>
+                                    </Tooltip>
 
                                     { (plugin.id !== ROOT_NODE) && 
                                     <Tooltip title="Select Parent">
@@ -239,7 +263,7 @@ const RenderNode = ({ render }) => {
                                     { plugin.modal && 
                                     <Tooltip title="Edit Component">
                                         <IconButton onClick={modalHandleOpen} size="small">
-                                            <ModeEditOutlinedIcon />
+                                            <SettingsIcon />
                                         </IconButton>
                                     </Tooltip>}
 

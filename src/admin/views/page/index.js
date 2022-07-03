@@ -44,6 +44,7 @@ export const PageEdit = (props) => {
         <Edit {...props}>
             <Layout title="Edit Page" editor={true}>
                 <LoadFrame />
+                {/* <Frame><Element canvas is={Plugins.Page}></Element></Frame> */}
             </Layout>
         </Edit>
     );

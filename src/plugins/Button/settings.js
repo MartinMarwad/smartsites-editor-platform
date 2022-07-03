@@ -2,6 +2,7 @@
 // React
 import React from 'react';
 import { useNode } from '@craftjs/core';
+import debounce from 'lodash.debounce';
 
 // MUI
 import Divider from '@mui/material/Divider';
@@ -18,12 +19,16 @@ import Slider from '@mui/material/Slider';
 import Input from '@mui/material/Input';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import Checkbox from '@mui/material/Checkbox';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import AddLinkIcon from '@mui/icons-material/AddLink';
 
 // Local
 import AccordionGroup from '../AccordionGroup';
 import AccordionSection from '../AccordionSection';
-import AccordionItem, { ToolbarRadio } from '../AccordionItem';
-import PluginSettings from '../PluginSettings';
+import AccordionItem, { InputField } from '../AccordionItem';
+import PluginSettings, { getRealValue } from '../PluginSettings';
 
 
 // Settings
@@ -34,79 +39,155 @@ export default function ButtonSettings() {
 
     return (
         <PluginSettings>
-            <Grid container spacing={2} sx={{p: 2}}>
-
-                {/* text */}
-                <Grid item xs={12} >
-                    <TextField
-                        id="props-text"
-                        label="Text"
-                        variant="outlined"
-                        value={props.text}
-                        onChange={(event) => {
-                            setProp((props) => (props.text = event.target.value))
-                        }}
-                        sx={{ width: '100%'}}/>
-                </Grid>
-            </Grid>
+            
             <AccordionGroup title="General">
                 
-                {/* variant */}
-                <AccordionSection title="Variant" secondary={<Chip label={props.variant}/>}>
-                    <FormControl component="fieldset">
-                        <RadioGroup 
-                            name="component-variant"
-                            value={props.variant}
-                            onChange={(e) => setProp((props) => (props.variant = e.target.value))}
-                            row={false}
-                        >
-                            <FormControlLabel value="text" control={<Radio />} label="Text" />
-                            <FormControlLabel value="contained" control={<Radio />} label="Contained" />
-                            <FormControlLabel value="outlined" control={<Radio />} label="Outlined" />
-                        </RadioGroup>
-                    </FormControl>
+                {/* text */}
+                {/* <AccordionSection title="Text" secondaryChip={props.text} divider description="Edit the button text.">
+                    <AccordionItem>
+                        <InputField hideRadioGroup
+                            label="Button Text"
+                            value={props.text}
+                            options={['']}
+                            onChange={(event, value) => { setProp((props) => (props.text = getRealValue(value))) }}
+                        />
+                    </AccordionItem>
+                </AccordionSection> */}
+
+                {/* link */}
+                <AccordionSection title="Link" secondaryChip={props.link} divider description="The button link if URL is provided.">
+                    <AccordionItem direction="row">
+                        <Tooltip title="Select Link">
+                            <IconButton aria-label="edit" size="large" >
+                                <AddLinkIcon fontSize="inherit" />
+                            </IconButton>
+                        </Tooltip>
+                        <InputField hideRadioGroup
+                            sx={{width: '100%'}}
+                            label="Button Link"
+                            value={props.link}
+                            options={['']}
+                            onChange={(event, value) => { setProp((props) => (props.link = getRealValue(value)))}}
+                        />
+                    </AccordionItem>
+                    {/* <AccordionItem >
+                        <FormControlLabel 
+                            label="Open Link in New Tab"
+                            control={<Checkbox defaultChecked />} 
+                            checked={props.open_link_new_tab}
+                            onChange={(event, value) => { setProp((props) => (props.open_link_new_tab = getRealValue(value)))}}
+                        />
+                    </AccordionItem> */}
                 </AccordionSection>
-                <Divider/>
+
+                {/* variant */}
+                <AccordionSection title="Variant" secondaryChip={props.variant} divider description="The variant to use.">
+                    <AccordionItem>
+                        <InputField hideTextField
+                            label="Variant"
+                            value={props.variant}
+                            options={['text', 'contained', 'outlined']}
+                            onChange={(event, value) => { setProp((props) => (props.variant = getRealValue(value))) }}
+                        />
+                    </AccordionItem>
+                </AccordionSection>
 
                 {/* size */}
-                <AccordionSection title="Size" secondary={<Chip label={props.size}/>}>
-                    <FormControl component="fieldset">
-                        <RadioGroup 
-                            name="component-size"
+                <AccordionSection title="Size" secondaryChip={props.size} divider
+                    description="The size of the component. small is equivalent to the dense button styling."
+                >
+                    <AccordionItem>
+                        <InputField hideTextField
+                            label="Variant"
                             value={props.size}
-                            onChange={(e) => setProp((props) => (props.size = e.target.value))}
-                            row={false}
-                        >
-                            <FormControlLabel value="small" control={<Radio />} label="Small" />
-                            <FormControlLabel value="medium" control={<Radio />} label="Medium" />
-                            <FormControlLabel value="large" control={<Radio />} label="Large" />
-                        </RadioGroup>
-                    </FormControl>
+                            options={['small', 'medium', 'large']}
+                            onChange={(event, value) => { setProp((props) => (props.size = getRealValue(value))) }}
+                        />
+                    </AccordionItem>
                 </AccordionSection>
-                <Divider/>
 
                 {/* color */}
-                <AccordionSection title="Color" secondary={<Chip label={props.color}/>}>
-                    <Typography sx={{pb: 2, color: 'gray', }}>
-                        The color of the component. It supports both default and custom theme colors, which can be 
-                        added as shown in the palette customization guide.
-                    </Typography>
-                    <FormControl component="fieldset">
-                        <RadioGroup 
-                            name="component-color"
+                <AccordionSection title="Color Theme" secondaryChip={props.color} divider
+                    description="The color of the component. It supports both default and custom theme colors, which can be added as shown in the palette customization guide."
+                >
+                    <AccordionItem>
+                        <InputField hideTextField hideUndefinedValue
+                            label="Color Theme"
                             value={props.color}
-                            onChange={(e) => setProp((props) => (props.color = e.target.value))}
-                            row={false}
-                        >
-                            <FormControlLabel value="inherit" control={<Radio />} label="Inherit" />
-                            <FormControlLabel value="primary" control={<Radio />} label="Primary" />
-                            <FormControlLabel value="secondary" control={<Radio />} label="Secondary" />
-                            <FormControlLabel value="success" control={<Radio />} label="Success" />
-                            <FormControlLabel value="error" control={<Radio />} label="Error" />
-                            <FormControlLabel value="info" control={<Radio />} label="Info" />
-                            <FormControlLabel value="warning" control={<Radio />} label="Warning" />
-                        </RadioGroup>
-                    </FormControl>
+                            options={['inherit', 'primary', 'secondary', 'success', 'error', 'info', 'warning']}
+                            onChange={(event, value) => { setProp((props) => (props.color = getRealValue(value))) }}
+                        />
+                    </AccordionItem>
+                </AccordionSection>
+
+                {/* fullWidth */}
+                <AccordionSection title="Full Width" secondaryChip={String(props.fullWidth)} divider
+                    description="If true, the button will take up the full width of its container."
+                >
+                    <AccordionItem>
+                        <InputField hideTextField hideUndefinedValue rowRadioGroup
+                            label="Full Width"
+                            value={props.fullWidth}
+                            options={['true', 'false']}
+                            onChange={(event, value) => { setProp((props) => (props.fullWidth = getRealValue(value))) }}
+                        />
+                    </AccordionItem>
+                </AccordionSection>
+
+                {/* disabled */}
+                <AccordionSection title="Disabled" secondaryChip={String(props.disabled)} divider
+                    description="If true, the component is disabled."
+                >
+                    <AccordionItem>
+                        <InputField hideTextField hideUndefinedValue rowRadioGroup
+                            label="Disabled"
+                            value={props.disabled}
+                            options={['true', 'false']}
+                            onChange={(event, value) => { setProp((props) => (props.disabled = getRealValue(value))) }}
+                        />
+                    </AccordionItem>
+                </AccordionSection>
+
+                {/* disableElevation */}
+                <AccordionSection title="Disable Elevation" secondaryChip={String(props.disableElevation)} divider
+                    description="If true, no elevation is used."
+                >
+                    <AccordionItem>
+                        <InputField hideTextField hideUndefinedValue rowRadioGroup
+                            label="Disable Elevation"
+                            value={props.disableElevation}
+                            options={['true', 'false']}
+                            onChange={(event, value) => { setProp((props) => (props.disableElevation = getRealValue(value))) }}
+                        />
+                    </AccordionItem>
+                </AccordionSection>
+
+                {/* disableFocusRipple */}
+                <AccordionSection title="Disable Focus Ripple" secondaryChip={String(props.disableFocusRipple)} divider
+                    description="If true, the keyboard focus ripple is disabled."
+                >
+                    <AccordionItem>
+                        <InputField hideTextField hideUndefinedValue rowRadioGroup
+                            label="Disable Focus Ripple"
+                            value={props.disableFocusRipple}
+                            options={['true', 'false']}
+                            onChange={(event, value) => { setProp((props) => (props.disableFocusRipple = getRealValue(value))) }}
+                        />
+                    </AccordionItem>
+                </AccordionSection>
+
+                {/* disableRipple */}
+                <AccordionSection title="Disable Ripple" secondaryChip={String(props.disableRipple)} 
+                    description="If true, the ripple effect is disabled."
+                >
+                    <AccordionItem>
+                        <InputField hideTextField hideUndefinedValue rowRadioGroup
+                            label="Disable Ripple"
+                            value={props.disableRipple}
+                            options={['true', 'false']}
+                            onChange={(event, value) => { setProp((props) => (props.disableRipple = getRealValue(value))) }}
+                        />
+                    </AccordionItem>
                 </AccordionSection>
 
             </AccordionGroup>

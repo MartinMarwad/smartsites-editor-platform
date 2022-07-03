@@ -4,7 +4,7 @@ import React from 'react';
 import { Element, useNode } from '@craftjs/core';
 
 // Local
-import { Text } from '../Text';
+import Text from '../TextBox';
 
 
 // Plugin Component

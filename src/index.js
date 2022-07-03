@@ -1,19 +1,27 @@
 
 // React
-import React from 'react';
+import React, { useState, useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Routes, Route, Outlet, Link } from "react-router-dom-v6";
 import { Helmet } from 'react-helmet'
+import { Editor, Frame, Element } from '@craftjs/core';
 
-// React Material 
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
+// MUI
+import Box from '@mui/material/Box'; 
 
-// Project
+// Plugins 
+import Plugins from './plugins';
+
+// Local
 import reportWebVitals from './reportWebVitals';
-// import './index.css'
 import Admin from './admin';
-// import App from './editor';
+
+// Fonts
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+
 
 // Django-CRA-Helper: Inject Properties
 window.component = window.component || 'App';
@@ -22,26 +30,47 @@ window.reactRoot = window.reactRoot || document.getElementById('root');
 
 
 // Page
-function Page(props) {
+function Page({ title, content }) {
     return (
-        <div>
-            <Helmet><title>{props.title}</title></Helmet>
-            <div>{props.content}</div>
-        </div>
+        <Box>
+            <Helmet><title>{title}</title></Helmet>
+            <Editor resolver={Plugins} enabled={false}>
+                <Frame data={content}/>
+            </Editor>
+        </Box>
     );
 }
 
 // Router
 function Router(props) {
+    const [pages, setPages] = useState([]);
+
+    // Fetch Pages
+    useEffect(() => {
+        fetch('/api/pages/?format=json')
+            .then((response) => response.json())
+            .then((data) => {
+                // console.log(data);
+                setPages(data.results);
+            })
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }, []);
 
     // For api pages = /api/pages/?format=json
-    const TempPage = <Page title="Blank title" content="Blank content" />
+    // const TempPage = <Page title={indexPage.title} content={indexPage.content} />
 
     return (
         <BrowserRouter>
-            <CssBaseline />
             <Routes>
-                <Route path="/" element={<div>Hello from a new blank page!</div>} />
+                {/* <Route path="/" element={<Page />} /> */}
+                {pages.map((page, index) => { 
+                    if (page.id == 1) {
+                        return <Route key={index.toString()} path="/" element={<Page title={page.title} content={page.content} />} />;
+                    }
+                    return <Route key={index.toString()} path={page.url} element={<Page title={page.title} content={page.content} />} />
+                })}
                 <Route path="admin" element={<Admin />} />
             </Routes>
         </BrowserRouter>
@@ -50,7 +79,7 @@ function Router(props) {
 
 
 // React the component as usual
-ReactDOM.render(React.createElement(Admin, window.props), window.reactRoot, );
+ReactDOM.render(React.createElement(Router, window.props), window.reactRoot, );
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

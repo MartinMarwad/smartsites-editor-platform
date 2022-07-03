@@ -6,7 +6,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Update & Upgrade System
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && apt-get upgrade -y && apt-get install -y curl sudo
+RUN apt-get update && apt-get upgrade -y && apt-get install -y curl sudo gunicorn3
 
 # Create User with Sudo Permissions
 RUN adduser --disabled-password --gecos '' ubuntu

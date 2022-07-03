@@ -1,7 +1,7 @@
 
 // React
 import React from 'react';
-import { useNode } from '@craftjs/core';
+import { Element, useNode } from '@craftjs/core';
 
 // MUI
 import Grid from '@mui/material/Grid';
@@ -17,7 +17,7 @@ export default function GridPlugin(props) {
     const { connectors: { connect, drag }, } = useNode();
 
     return (
-        <Grid container ref={connect} {...props}>             
+        <Grid container {...props}>
             {props.children}
         </Grid>
     );
