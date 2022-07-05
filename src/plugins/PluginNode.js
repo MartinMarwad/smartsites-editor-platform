@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useCallback } from 'react';
 import ReactDOM from 'react-dom';
 import { ROOT_NODE } from '@craftjs/utils';
 import { useNode, useEditor } from '@craftjs/core';
+import { getRandomId } from "@craftjs/utils";
 
 // MUI
 import Box from '@mui/material/Box';
@@ -141,6 +142,40 @@ const RenderNode = ({ render }) => {
         setValue(newValue);
     };
 
+
+    // Function to clone a component's node tree: https://github.com/prevwong/craft.js/issues/209#issuecomment-795221484
+    const getCloneTree = useCallback((idToClone) => {
+        const tree = query.node(idToClone).toNodeTree();
+        const newNodes = {};
+
+        const changeNodeId = (node, newParentId) => {
+            const newNodeId = getRandomId();
+            const childNodes = node.data.nodes.map((childId) => changeNodeId(tree.nodes[childId], newNodeId));
+            const linkedNodes = Object.keys(node.data.linkedNodes).reduce((accum, id) => {
+                const _newNodeId = changeNodeId(tree.nodes[node.data.linkedNodes[id]], newNodeId,);
+                return { ...accum, [id]: _newNodeId, };
+            }, {});
+
+            let tmpNode = {
+                ...node,
+                id: newNodeId,
+                data: {
+                    ...node.data,
+                    parent: newParentId || node.data.parent,
+                    nodes: childNodes,
+                    linkedNodes,
+                },
+            };
+            let freshnode = query.parseFreshNode(tmpNode).toNode();
+            newNodes[newNodeId] = freshnode;
+            return newNodeId;
+        };
+
+        const rootNodeId = changeNodeId(tree.nodes[tree.rootNodeId]);
+        return { rootNodeId, nodes: newNodes, };
+    }, []);
+
+
     return (
         <Box ref={(ref) => connect(drag(ref))} onClick={handleMouseUp} onBlur={handleClose} sx={{ }}>
 
@@ -231,28 +266,7 @@ const RenderNode = ({ render }) => {
                                         </Tooltip> ContentCopyIcon
                                     } */}
 
-                                    <Tooltip title="Duplicate">
-                                        <IconButton 
-                                            size="small" aria-label="delete"
-                                            onClick={() => { 
-                                                const {id: nodeId, data: {type, props, parent: parentId}} = query.node(id).get();
-                                                const prevIndex = query.getSerializedNodes().ROOT.nodes.indexOf(nodeId);
-
-                                                actions.add(query.createNode(React.createElement(type, props)), parentId, prevIndex - 1);
-
-                                                // const { data: {type, props}} = query.node(id).get();
-                                                // actions.add(
-                                                //     query.createNode(React.createElement(type, props)),
-                                                //     // query.node(id).get().parent,
-                                                // );
-                                          
-                                                // actions.selectNode(parent); 
-                                            }}
-                                        >
-                                            <ContentCopyIcon />
-                                        </IconButton>
-                                    </Tooltip>
-
+                                    {/* Select Parent */}
                                     { (plugin.id !== ROOT_NODE) && 
                                     <Tooltip title="Select Parent">
                                         <IconButton onClick={() => { actions.selectNode(parent); }} size="small" aria-label="delete">
@@ -260,13 +274,28 @@ const RenderNode = ({ render }) => {
                                         </IconButton>
                                     </Tooltip>}
 
-                                    { plugin.modal && 
+                                    {/* Duplicate */}
+                                    { plugin.deletable &&
+                                    <Tooltip title="Duplicate">
+                                        <IconButton size="small" aria-label="delete" onClick={() => { 
+                                            actions.history.throttle().addNodeTree(getCloneTree(id), query.node(id).get().data.parent);
+                                        }}>
+                                            <ContentCopyOutlinedIcon />
+                                        </IconButton>
+                                    </Tooltip>}
+
+                                    {/* Edit/Settings */}
+                                    {/* { plugin.modal && 
                                     <Tooltip title="Edit Component">
                                         <IconButton onClick={modalHandleOpen} size="small">
                                             <SettingsIcon />
                                         </IconButton>
-                                    </Tooltip>}
+                                    </Tooltip>} */}
 
+                                    {/* { (plugin.modal || plugin.deletable || (plugin.id!==ROOT_NODE) ) && 
+                                    <Divider orientation="vertical" flexItem />} */}
+
+                                    {/* Delete */}
                                     { plugin.deletable && 
                                     <Tooltip title="Delete">
                                         <IconButton onClick={() => { actions.delete(id); }} size="small" aria-label="delete">

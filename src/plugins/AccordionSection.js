@@ -15,7 +15,7 @@ import Chip from '@mui/material/Chip';
 export default function AccordionSection({ title, secondary, secondaryChip, children, description, defaultExpanded=false, divider=false}) {
     return (
         <>
-            <Accordion defaultExpanded={defaultExpanded} sx={{mx: -1, boxShadow: 0, }}>
+            <Accordion defaultExpanded={defaultExpanded} sx={{mx: -1, boxShadow: 0, }} TransitionProps={{ unmountOnExit: true }}>
                 <AccordionSummary
                     // expandIcon={<ExpandMoreIcon />}
                     aria-controls={`${title}-content`}

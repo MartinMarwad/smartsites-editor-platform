@@ -7,6 +7,8 @@ import { Helmet } from 'react-helmet'
 import { Editor, Frame, Element } from '@craftjs/core';
 
 // MUI
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box'; 
 
 // Plugins 
@@ -31,13 +33,17 @@ window.reactRoot = window.reactRoot || document.getElementById('root');
 
 // Page
 function Page({ title, content }) {
+    const theme = createTheme({ });
     return (
-        <Box>
+        <ThemeProvider theme={theme}>
             <Helmet><title>{title}</title></Helmet>
-            <Editor resolver={Plugins} enabled={false}>
-                <Frame data={content}/>
-            </Editor>
-        </Box>
+            <CssBaseline />
+            <Box container sx={{width: '100%'}}>
+                <Editor resolver={Plugins} enabled={false}>
+                    <Frame data={content}/>
+                </Editor>
+            </Box>
+        </ThemeProvider>
     );
 }
 
