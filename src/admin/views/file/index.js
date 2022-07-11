@@ -2,7 +2,7 @@
 // React
 import React from "react";
 import { Create, Datagrid, Edit, EditButton, List, Resource, ShowButton, SimpleForm, } from "react-admin";
-import { TextField, FileField , NumberField } from "react-admin";
+import { ImageField, TextField, FileField , NumberField } from "react-admin";
 import { TextInput, FileInput } from "react-admin";
 
 // Local
@@ -34,9 +34,9 @@ export const FileEdit = (props) => (
                 <NumberField disabled source="id" />
                 <TextInput source="name" />
                 <TextInput source="description" label="Alternate text for the image"/>
-                <FileField source="file" label="Current file:"/>
-                <FileInput source="file" label="Related files">
-                    <FileField source="file"/>
+                <TextField source="file" label="Original File:" />
+                <FileInput source="file" label="Related files" placeholder={<p>Drop your file here</p>}>
+                    <ImageField source="src" />
                 </FileInput>
             </SimpleForm>
         </Edit>
@@ -51,7 +51,7 @@ export const FileCreate = (props) => (
                 <TextInput source="name" />
                 <TextInput source="description" label="Alternate text for the image"/>
                 <FileInput source="file" label="Related files">
-                    <FileField source="file"/>
+                    <FileField source="src" />
                 </FileInput>
             </SimpleForm>
         </Create>

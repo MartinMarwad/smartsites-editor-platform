@@ -10,9 +10,9 @@ import Settings from './settings';
 
 // Plugin Details
 CardFooter.craft = {
-    name: "cardFooter",
-    displayName: "Card Footer",
-    description: 'Components that are allowed in the Card Footer.',
+    name: "cardMedia",
+    displayName: "Card Media",
+    description: 'Components that are allowed in the Card Media.',
     props: Props,
     related: {
         sidebar: Settings,

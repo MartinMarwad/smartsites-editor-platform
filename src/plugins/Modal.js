@@ -16,7 +16,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 
 
-export default function CustomModal({ title, children, bottom_actions, open, onClose, fullWidth, maxWidth }) {
+export default function CustomModal({ title, children, BottomActions, open, onClose, fullWidth, maxWidth }) {
 
     return (
         <Dialog
@@ -53,7 +53,7 @@ export default function CustomModal({ title, children, bottom_actions, open, onC
 
             {/* Footer (bottom_actions) */}
             <DialogActions>
-                { bottom_actions ? React.createElement(bottom_actions) : (
+                { BottomActions ? {BottomActions} : (
                     <Button autoFocus onClick={onClose}>
                         Save changes
                     </Button>

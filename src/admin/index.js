@@ -22,6 +22,8 @@ import files from './views/file';
 import users from './views/user';
 import notifications from './views/notification';
 
+import dataProvider, { authProvider } from './dataProvider';
+
 
 // Theme
 const baseTheme = createTheme();
@@ -41,8 +43,8 @@ const EmptyLayout = ({themeOld, title, children}) => {
 
 // React Admin Component
 export default function ReactAdmin() {
-    const authProvider = jwtTokenAuthProvider({obtainAuthTokenUrl: "/api/token/"});
-    const dataProvider = drfProvider("/api", fetchJsonWithAuthJWTToken);
+    // const authProvider = jwtTokenAuthProvider({obtainAuthTokenUrl: "/api/token/"});
+    // const dataProvider = drfProvider("/api", fetchJsonWithAuthJWTToken);
 
     const dash = () => (
         <EmptyLayout>

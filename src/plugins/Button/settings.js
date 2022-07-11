@@ -29,10 +29,13 @@ import AccordionGroup from '../AccordionGroup';
 import AccordionSection from '../AccordionSection';
 import AccordionItem, { InputField } from '../AccordionItem';
 import PluginSettings, { getRealValue } from '../PluginSettings';
+import PageSelector from '../linkSelectorService';
 
 
 // Settings
 export default function ButtonSettings() {
+    const [openPageSelector, setOpenPageSelector] = React.useState(false);
+
     const { actions: { setProp }, props } = useNode((node) => ({
         props: node.data.props,
     }));
@@ -57,11 +60,22 @@ export default function ButtonSettings() {
                 {/* link */}
                 <AccordionSection title="Link" secondaryChip={props.link} divider description="The button link if URL is provided.">
                     <AccordionItem direction="row">
-                        <Tooltip title="Select Link">
-                            <IconButton aria-label="edit" size="large" >
-                                <AddLinkIcon fontSize="inherit" />
-                            </IconButton>
-                        </Tooltip>
+                        <Box>
+                            <Tooltip title="Select Link">
+                                <IconButton aria-label="edit" size="large" onClick={() => { setOpenPageSelector(true); }}>
+                                    <AddLinkIcon fontSize="inherit" />
+                                </IconButton>
+                            </Tooltip>
+                            <PageSelector
+                                open={openPageSelector}
+                                onClose={() => setOpenPageSelector(false)}
+                                onSubmit={(page) => {
+                                    setProp((props) => {
+                                        props.link = page.url;
+                                    }, 2000);
+                                }}
+                            />
+                        </Box>
                         <InputField hideRadioGroup
                             sx={{width: '100%'}}
                             label="Button Link"

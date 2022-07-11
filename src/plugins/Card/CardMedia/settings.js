@@ -15,10 +15,13 @@ import AccordionGroup from '../../AccordionGroup';
 import AccordionSection from '../../AccordionSection';
 import AccordionItem, { InputField } from '../../AccordionItem';
 import PluginSettings, { getRealValue } from '../../PluginSettings';
+import FileSelectorService from '../../fileSelectorUploadService';
 
 
 // Settings
 export default function Settings() {
+    const [openFileSelector, setOpenFileSelector] = React.useState(false);
+
     const { actions: { setProp }, props } = useNode((node) => ({
         props: node.data.props,
     }));
@@ -32,10 +35,20 @@ export default function Settings() {
                      <AccordionItem direction='row'>
                         <Box sx={{ boxShadow: 0, }}>
                             <Tooltip title="Upload Image">
-                                <IconButton aria-label="edit" size="large" onClick={{}}>
+                                <IconButton aria-label="edit" size="large" onClick={() => { setOpenFileSelector(true); }}>
                                     <AddPhotoAlternateIcon fontSize="inherit" />
                                 </IconButton>
                             </Tooltip>
+                            <FileSelectorService 
+                                open={openFileSelector} 
+                                onClose={() => setOpenFileSelector(false)} 
+                                onSubmit={(file) => {
+                                    setProp((props) => {
+                                        props.src = getRealValue(file.file);
+                                        props.alt = getRealValue(file.description);
+                                    }, 2000);
+                                }}
+                            />
                         </Box>
                         <InputField 
                             hideRadioGroup

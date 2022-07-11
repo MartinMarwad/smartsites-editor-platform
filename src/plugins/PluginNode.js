@@ -278,7 +278,7 @@ const RenderNode = ({ render }) => {
                                     { plugin.deletable &&
                                     <Tooltip title="Duplicate">
                                         <IconButton size="small" aria-label="delete" onClick={() => { 
-                                            actions.history.throttle().addNodeTree(getCloneTree(id), query.node(id).get().data.parent);
+                                            actions.history.throttle(1000).addNodeTree(getCloneTree(id), query.node(id).get().data.parent);
                                         }}>
                                             <ContentCopyOutlinedIcon />
                                         </IconButton>

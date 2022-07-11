@@ -39,6 +39,7 @@ import AccordionSection from './AccordionSection';
 import AccordionItem from './AccordionItem';
 import { InputField } from './AccordionItem';
 import CustomModal from './Modal';
+import FileSelectorService from './fileSelectorUploadService';
 
 
 // Helper function to determine the real value from an Autocomplete input, which only outputs strings.
@@ -77,8 +78,9 @@ export default function PluginSettings(component_props) {
         displayName: node.data.displayName
     }));
 
-    // Manage Modal
+    // Manage Modals
     const [openModal, setOpenModal] = React.useState(false);
+    const [openFileSelector, setOpenFileSelector] = React.useState(false);
 
     return (
         <Box>
@@ -399,19 +401,19 @@ export default function PluginSettings(component_props) {
                      <AccordionItem direction='row'>
                         <Box sx={{ boxShadow: 0, }}>
                             <Tooltip title="Upload Image">
-                                <IconButton aria-label="edit" size="large" onClick={() => { setOpenModal(true); }}>
+                                <IconButton aria-label="edit" size="large" onClick={() => { setOpenFileSelector(true); }}>
                                     <AddPhotoAlternateIcon fontSize="inherit" />
                                 </IconButton>
                             </Tooltip>
-                            <CustomModal
-                                title="Upload Image"
-                                open={openModal}
-                                fullWidth={true}
-                                maxWidth="md"
-                                onClose={() => { setOpenModal(false); }}
-                            >
-                                Sorry, this is not completed yet, but this is where the custom image uploader goes.
-                            </CustomModal>
+                            <FileSelectorService 
+                                open={openFileSelector} 
+                                onClose={() => setOpenFileSelector(false)} 
+                                onSubmit={(file) => {
+                                    setProp((props) => {
+                                        props.sx.backgroundImage = `url('${file.file}')`;
+                                    }, 2000);
+                                }}
+                            />
                         </Box>
                         <InputField 
                             hideRadioGroup
