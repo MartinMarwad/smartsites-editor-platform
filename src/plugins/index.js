@@ -17,6 +17,11 @@ import Card, { CardPlugin, CardHeader, CardContent, CardMedia, CardFooter } from
 import CarouselPlugin from './Carousel';
 import MediaPlayer from './MediaPlayer';
 
+import MUIAppBar from '@mui/material/AppBar';
+import MUIToolbar from '@mui/material/Toolbar';
+import MUITypography from '@mui/material/Typography';
+import MUIButton from '@mui/material/Button';
+
 
 // Complete list of all plugins. This is used for the Craft.JS resolver. 
 const Plugins = {
@@ -145,7 +150,7 @@ const PluginComponents = [
             },
             {
                 displayName: "Text Button",
-                component: <Element canvas is={Button}><TextBox/></Element>
+                component: <Element canvas is={Button} disableNodeStyle><TextBox/></Element>
             },
             {
                 displayName: "Image Button",

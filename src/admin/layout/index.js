@@ -101,7 +101,7 @@ export default function Layout({ title="[Title Not Set]", editor=false, children
                 <Editor
                     // resolver={{ Card, Button, Text, Container, CardTop, CardBottom, Page }}
                     resolver={Plugins}
-                    onRender={RenderNode}
+                    // onRender={RenderNode}
                 >
         
                     <Header>

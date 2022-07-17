@@ -177,7 +177,7 @@ const RenderNode = ({ render }) => {
 
 
     return (
-        <Box ref={(ref) => connect(drag(ref))} onClick={handleMouseUp} onBlur={handleClose} sx={{ }}>
+        <Box ref={(ref) => connect(drag(ref))} onClick={handleMouseUp} onBlur={handleClose} sx={{display: "contents"}}>
 
             {render}
             

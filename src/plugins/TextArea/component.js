@@ -11,21 +11,28 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
 // Local
+import { Toolbar, getNodeStyle } from '../RenderNode';
 import Props from './props';
 
 
 // Plugin Component
 export default function TextArea(props) {
-    const { actions, enabled } = useEditor((state, query) => ({
+    const [open, setOpen] = React.useState(false);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const { actions, query, enabled, } = useEditor((state, query) => ({
         enabled: state.options.enabled,
     }));
-    const {actions: { setProp, setCustom }, connectors: { connect, drag }, selected, text, } = useNode((state) => ({
-        selected: state.events.selected,
-        dragged: state.events.dragged,
+    const { connectors: { connect, drag }, actions: { setProp }, selected, hovered, name } = useNode((node) => ({
+        selected: node.events.selected,
+        hovered: node.events.hovered,
     }));
 
     return (
-        <Box {...props} borderWidth={0} >
+        <Box {...props} borderWidth={0}
+            ref={(ref) => connect(drag(ref))}
+            sx={{...props.sx, ...getNodeStyle(selected, hovered)}} 
+            onClick={(event) => {setOpen(true); setAnchorEl(event.currentTarget); }}  
+        >
             <Box sx={{ mt: (selected && enabled) ? 5 : 0, borderWidth: 0,}}>
                 <CKEditor
                     editor={Editor}
@@ -36,6 +43,8 @@ export default function TextArea(props) {
                     }
                 />
             </Box>
+
+            {selected && <Toolbar open={open} anchorEl={anchorEl} /> }
         </Box>
     );
 };

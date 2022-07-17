@@ -7,7 +7,7 @@
     "@ckeditor/ckeditor5-build-classic": "^34.1.0",
     "@ckeditor/ckeditor5-build-inline": "^34.1.0",
     "@ckeditor/ckeditor5-react": "^5.0.2",
-    "@craftjs/core": "^0.2.0-beta.2",
+    "@craftjs/core": "^0.2.0-beta.6",
     "@craftjs/layers": "^0.2.0-beta.3",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",

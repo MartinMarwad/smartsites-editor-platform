@@ -9,15 +9,20 @@ import debounce from 'lodash.debounce';
 import Typography from '@mui/material/Typography';
 
 // Local
+import { Toolbar, getNodeStyle } from '../RenderNode';
 import Props from './props';
 
 
 // Plugin Component
 export default function TextBox(props) {
-    const { enabled } = useEditor((state, query) => ({enabled: state.options.enabled,}));
-    const {connectors: { connect, drag }, selected, actions: { setProp },} = useNode((state) => ({
-        selected: state.events.selected,
-        dragged: state.events.dragged,
+    const [open, setOpen] = React.useState(false);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const { actions, query, enabled, } = useEditor((state, query) => ({
+        enabled: state.options.enabled,
+    }));
+    const { connectors: { connect, drag }, actions: { setProp }, selected, hovered, name } = useNode((node) => ({
+        selected: node.events.selected,
+        hovered: node.events.hovered,
     }));
 
     const [editable, setEditable] = React.useState(false);
@@ -25,7 +30,14 @@ export default function TextBox(props) {
     React.useEffect(() => { if (selected) return; setEditable(false);}, [selected]);
 
     return (
-        <Typography onClick={() => selected && setEditable(true)} {...props}>
+        <Typography {...props}
+            ref={(ref) => connect(drag(ref))}
+            sx={{...props.sx, ...getNodeStyle(selected, hovered)}} 
+            onClick={(event) => {
+                setOpen(true); setAnchorEl(event.currentTarget); 
+                selected && setEditable(true);
+            }}
+        >
             <ContentEditable 
                 tagName="p"
                 html={props.text} 
@@ -35,6 +47,8 @@ export default function TextBox(props) {
                 }
                 // onChange={(e) => setProp((props) => (props.text = e.target.value.replace(/<\/?[^>]+(>|$)/g, '')))}
             />
+
+            {selected && <Toolbar open={open} anchorEl={anchorEl} /> }
         </Typography>
     );
 };
