@@ -1,72 +1,63 @@
 
 // React
-import React from 'react';
-import { Admin, Resource, ListGuesser } from 'react-admin';
-import { Notification } from 'react-admin';
-import drfProvider, { jwtTokenAuthProvider, fetchJsonWithAuthJWTToken } from 'ra-data-django-rest-framework';
-import { Helmet } from 'react-helmet'
-import { Route } from 'react-router-dom';
+import * as React from 'react';
+import { Admin, CustomRoutes, Resource } from 'react-admin';
+import { Route } from 'react-router';
 
-// MUI
-import CssBaseline from '@mui/material/CssBaseline';
-import { ThemeProvider } from "@material-ui/styles";
-import { createTheme } from "@material-ui/core";
+// React Admin Configuration 
+// import authProvider from './authProvider';
+// import dataProviderFactory from './dataProvider';
+import { dataProvider, authProvider } from './Provider';
+import { Login, Layout } from './layout';
+import { lightTheme } from './layout/themes';
 
-// Layout
-// import Layout from './layout';
-import Dashboard from './dashboard';
+// Resource Views
+import Dashboard from './views/dashboard';
+import Settings from './views/settings';
+import Pages from './views/pages';
+import Files from './views/files';
+import Users from './views/users';
+import Notifications from './views/notifications';
 
-// Resource Data Views
-import pages from './views/page';
-import files from './views/file';
-import users from './views/user';
-import notifications from './views/notification';
+// import { Dashboard } from './views/dashboard';
+// import visitors from './views/OLD/visitors';
+// import orders from './views/OLD/orders';
+// import products from './views/products';
+// import invoices from './views/invoices';
+// import categories from './views/OLD/categories';
+// import reviews from './views/OLD/reviews';
+// import Configuration from './views/OLD/configuration/Configuration';
+// import Segments from './views/OLD/segments/Segments';
 
-import dataProvider, { authProvider } from './dataProvider';
 
-
-// Theme
-const baseTheme = createTheme();
-
-// Create an empty shell page, so that individual pages can render their own custom layouts
-const EmptyLayout = ({themeOld, title, children}) => {
+// Main React Admin Application
+export default function App(props) {
     return (
-        <ThemeProvider theme={baseTheme}>
-            <CssBaseline />
-                <main id="main-content">
-                    {children}
-                </main>
-            <Notification />
-        </ThemeProvider>
-    );
-};
-
-// React Admin Component
-export default function ReactAdmin() {
-    // const authProvider = jwtTokenAuthProvider({obtainAuthTokenUrl: "/api/token/"});
-    // const dataProvider = drfProvider("/api", fetchJsonWithAuthJWTToken);
-
-    const dash = () => (
-        <EmptyLayout>
-            <Dashboard/>
-        </EmptyLayout>
-    )
-
-    return(
-        <Admin title="Admin" 
-            layout={EmptyLayout}
-            authProvider={authProvider} 
+        <Admin 
+            basename="/admin" 
+            title="" 
             dataProvider={dataProvider} 
-            customRoutes={[
-                <Route exact path="/" component={dash} />,
-            ]} 
-            disableTelemetry
+            authProvider={authProvider} 
+            dashboard={Dashboard} 
+            loginPage={Login} 
+            layout={Layout} 
+            disableTelemetry 
+            theme={lightTheme}
         >
-            <Helmet><title>React Admin</title></Helmet>
-            <Resource name="pages" {...pages} />
-            <Resource name="files" {...files} />
-            <Resource name="users" {...users} />
-            <Resource name="notifications" {...notifications}/>
-        </Admin>
-    );
-}
+            <CustomRoutes>
+                <Route path="settings" element={<Settings />}/>
+            </CustomRoutes>
+
+            <Resource name="pages" {...Pages}/>
+            <Resource name="files" {...Files}/>
+            <Resource name="users" {...Users}/>
+            <Resource name="notifications" {...Notifications}/>
+
+            {/* <Resource name="customers" {...visitors}/>
+            <Resource name="commands" {...orders} options={{ label: 'Orders' }}/>
+            <Resource name="invoices" {...invoices}/>
+            <Resource name="products" {...products}/>
+            <Resource name="categories" {...categories}/>
+            <Resource name="reviews" {...reviews}/> */}
+        </Admin>);
+};

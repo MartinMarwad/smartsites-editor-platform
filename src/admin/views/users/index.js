@@ -5,13 +5,15 @@ import { Create, Datagrid, Edit, EditButton, List, Resource, ShowButton, SimpleF
 import { TextField, ImageField, EmailField, NumberField, DateField, BooleanField } from "react-admin";
 import { TextInput, ImageInput, EmailInput, DateInput, BooleanInput } from "react-admin";
 
+// MUI 
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+
 // Local
-import Layout from '../../layout';
+// import Layout from '../../layout';
 
 
 const UserList = (props) => {
     return (
-        <Layout title="Users">
             <List {...props}>
                 <Datagrid>
                     <TextField source="id" />
@@ -24,12 +26,10 @@ const UserList = (props) => {
                     <ShowButton />
                 </Datagrid>
             </List>
-        </Layout>
     );
 };
 
 export const UserEdit = (props) => (
-    <Layout title="Edit User">
         <Edit {...props}>
             <SimpleForm>
                     <TextField source="id" />
@@ -40,11 +40,9 @@ export const UserEdit = (props) => (
                     <DateField source="last_login" />
             </SimpleForm>
         </Edit>
-    </Layout>
 );
 
 export const UserCreate = (props) => (
-    <Layout title="Add User">
         <Create title="Upload an Image" {...props}>
             <SimpleForm>
                 <NumberField source="id" />
@@ -55,7 +53,6 @@ export const UserCreate = (props) => (
                 </ImageInput>
             </SimpleForm>
         </Create>
-    </Layout>
 );
 
 // Export Page API
@@ -63,4 +60,5 @@ export default {
     list: UserList,
     // create: UserCreate,
     edit: UserEdit,
+    icon: GroupAddIcon,
 };

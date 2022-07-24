@@ -5,13 +5,15 @@ import { Create, Datagrid, Edit, EditButton, List, Resource, ShowButton, SimpleF
 import { TextField, ImageField, EmailField, NumberField, DateField, BooleanField } from "react-admin";
 import { TextInput, ImageInput, EmailInput, DateInput, BooleanInput } from "react-admin";
 
+// MUI
+import NotificationsIcon from '@mui/icons-material/Notifications';
+
 // Local
-import Layout from '../../layout';
+// import Layout from '../../layout';
 
 
 const NotificationList = (props) => {
     return (
-        <Layout title="Notification">
             <List {...props}>
                 <Datagrid rowClick="edit">
                     <TextField source="id" />
@@ -24,12 +26,10 @@ const NotificationList = (props) => {
                     <ShowButton />
                 </Datagrid>
             </List>
-        </Layout>
     );
 };
 
 export const NotificationEdit = (props) => (
-    <Layout title="Edit Notification">
         <Edit {...props}>
             <SimpleForm>
                     <TextField source="id" />
@@ -40,7 +40,6 @@ export const NotificationEdit = (props) => (
                     <DateField source="create_datetime" />
             </SimpleForm>
         </Edit>
-    </Layout>
 );
 
 // export const NotificationCreate = (props) => (
@@ -63,4 +62,5 @@ export default {
     list: NotificationList,
     // create: NotificationCreate,
     edit: NotificationEdit,
+    icon: NotificationsIcon,
 };

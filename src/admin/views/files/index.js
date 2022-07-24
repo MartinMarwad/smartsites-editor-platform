@@ -5,13 +5,15 @@ import { Create, Datagrid, Edit, EditButton, List, Resource, ShowButton, SimpleF
 import { ImageField, TextField, FileField , NumberField } from "react-admin";
 import { TextInput, FileInput } from "react-admin";
 
+// MUI
+import CloudIcon from '@mui/icons-material/Cloud';
+
 // Local
-import Layout from '../../layout';
+// import Layout from '../../layout';
 
 
 const FileList = (props) => {
     return (
-        <Layout title="Files">
             <List {...props}>
                 <Datagrid>
                     <TextField source="id" />
@@ -23,12 +25,10 @@ const FileList = (props) => {
                     <ShowButton />
                 </Datagrid>
             </List>
-        </Layout>
     );
 };
 
 export const FileEdit = (props) => (
-    <Layout title="Edit File" >
         <Edit {...props}>
             <SimpleForm>
                 <NumberField disabled source="id" />
@@ -40,11 +40,9 @@ export const FileEdit = (props) => (
                 </FileInput>
             </SimpleForm>
         </Edit>
-    </Layout>
 );
 
 export const FileCreate = (props) => (
-    <Layout title="Add File">
         <Create {...props}>
             <SimpleForm>
                 <NumberField source="id" />
@@ -55,7 +53,6 @@ export const FileCreate = (props) => (
                 </FileInput>
             </SimpleForm>
         </Create>
-    </Layout>
 );
 
 // Export Page API
@@ -63,4 +60,5 @@ export default {
     list: FileList,
     create: FileCreate,
     edit: FileEdit,
+    icon: CloudIcon,
 };

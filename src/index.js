@@ -1,8 +1,9 @@
 
 // React
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Routes, Route, Outlet, Link } from "react-router-dom-v6";
+import { BrowserRouter, HashRouter, Routes, Route, Outlet, Link } from "react-router-dom";
+import axios from 'axios';
 import { Helmet } from 'react-helmet'
 import { Editor, Frame, Element } from '@craftjs/core';
 
@@ -31,32 +32,34 @@ window.props = window.props || { env: 'Create-React-App' };
 window.reactRoot = window.reactRoot || document.getElementById('root');
 
 
+
 // Page
 function Page({ title, content }) {
-    const theme = createTheme({ });
+    const theme = createTheme({});
     return (
         <ThemeProvider theme={theme}>
             <Helmet><title>{title}</title></Helmet>
             <CssBaseline />
-            <Box container sx={{width: '100%'}}>
+            <Box container>
                 <Editor resolver={Plugins} enabled={false}>
-                    <Frame data={content}/>
+                    <Frame data={content} />
                 </Editor>
             </Box>
         </ThemeProvider>
     );
 }
 
-// Router
-function Router(props) {
+// Main Application
+function App(props) {
     const [pages, setPages] = useState([]);
+    const theme = createTheme({});
 
     // Fetch Pages
     useEffect(() => {
         fetch('/api/pages/?format=json')
             .then((response) => response.json())
             .then((data) => {
-                // console.log(data);
+                // console.log(data.results);
                 setPages(data.results);
             })
             .catch((err) => {
@@ -64,28 +67,29 @@ function Router(props) {
             });
     }, []);
 
-    // For api pages = /api/pages/?format=json
-    // const TempPage = <Page title={indexPage.title} content={indexPage.content} />
+
+    if (!pages) return "No pages!"
 
     return (
-        <BrowserRouter>
-            <Routes>
-                {/* <Route path="/" element={<Page />} /> */}
-                {pages.map((page, index) => { 
-                    if (page.id == 1) {
-                        return <Route key={index.toString()} path="/" element={<Page title={page.title} content={page.content} />} />;
-                    }
-                    return <Route key={index.toString()} path={page.url} element={<Page title={page.title} content={page.content} />} />
-                })}
-                <Route path="admin" element={<Admin />} />
-            </Routes>
-        </BrowserRouter>
+        <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Box height="100vh" display="flex" flexDirection="column">
+                <BrowserRouter>
+                    <Routes>
+                        {pages.map((page, index) => (
+                            <Route key={index.toString()} path={(page.id == 1) ? "/" : page.url} element={<Page title={page.title} content={page.content} />} />
+                        ))}
+                        
+                        <Route path="/admin/*" element={<Admin />} />
+                    </Routes>
+                </BrowserRouter>
+            </Box>
+        </ThemeProvider>
     );
 }
 
-
 // React the component as usual
-ReactDOM.render(React.createElement(Router, window.props), window.reactRoot, );
+ReactDOM.render(React.createElement(App, window.props), window.reactRoot, );
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
