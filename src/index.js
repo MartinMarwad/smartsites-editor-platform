@@ -73,7 +73,7 @@ function App(props) {
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <Box height="100vh" display="flex" flexDirection="column">
+            <Box >
                 <BrowserRouter>
                     <Routes>
                         {pages.map((page, index) => (

@@ -22,7 +22,7 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import StarBorder from '@mui/icons-material/StarBorder';
 
 // Plugins
-import Plugins, { PluginComponents } from '../../../../plugins';
+import Plugins, { PluginComponents } from '../../../../../plugins';
 
 
 // Plugin Template Item

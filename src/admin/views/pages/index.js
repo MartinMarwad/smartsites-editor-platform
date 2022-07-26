@@ -11,10 +11,12 @@ import Typography from '@mui/material/Typography';
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ArticleIcon from '@mui/icons-material/Article';
+import Grid from '@mui/material/Grid';
 
 // Local
+import PageEditor from './PageEditor';
 import Plugins from '../../../plugins';
-import SidePanel from './SidePanel';
+// import SidePanel from './SidePanel';
 
 
 
@@ -32,38 +34,49 @@ const PageList = (props) => {
     );
 };
 
-const Aside = () => (
-    <Box sx={{ width: '200px', margin: '1em' }}>
-        <Typography variant="h6">Instructions</Typography>
-        <Typography variant="body2">
-            Posts will only be published once an editor approves them
-        </Typography>
-    </Box>
-);
+// const Aside = () => (
+//     <Box sx={{ width: '200px', margin: '1em' }}>
+//         <Typography variant="h6">Instructions</Typography>
+//         <Typography variant="body2">
+//             Posts will only be published once an editor approves them
+//         </Typography>
+//     </Box>
+// );
 
-export const PageEdit = (props) => {
-
-    // Helper function to access the React-Admin context to give to Craft.js
-    const LoadFrame = () => {
-        const record = useRecordContext();
-        if (!record) return null;
-        return <Frame data={record.content}/>
-    }
-
+const Aside = () => {
     return (
-        <Editor resolver={Plugins}>
-            <Edit {...props} aside={<SidePanel/>}>
-                {/* <Layout title="Edit Page" editor={true}> */}
-                {/* <Editor resolver={Plugins}> */}
-                    <LoadFrame />
-                {/* </Editor> */}
-                
-                    {/* <Frame><Element canvas is={Plugins.Page}></Element></Frame> */}
-                {/* </Layout> */}
-            </Edit>
-        </Editor>
+        <Box width={400} display={{ xs: 'none', lg: 'block' }}>
+            <Typography variant="h6">Instructions</Typography>
+            <Typography variant="body2">
+                Posts will only be published once an editor approves them
+            </Typography>
+        </Box>
     );
-}
+};
+
+// export const PageEdit = (props) => {
+
+//     // Helper function to access the React-Admin context to give to Craft.js
+//     const LoadFrame = () => {
+//         const record = useRecordContext();
+//         if (!record) return null;
+//         return <Frame data={record.content}/>
+//     }
+
+//     return (
+//             <Edit {...props} aside={<SidePanel/>}>
+//                 {/* <Grid container width={{ xs: '100%', xl: 800 }} spacing={2}> */}
+//                 {/* <Layout title="Edit Page" editor={true}> */}
+//                 {/* <Editor resolver={Plugins}> */}
+//                     <LoadFrame />
+//                 {/* </Editor> */}
+                
+//                     {/* <Frame><Element canvas is={Plugins.Page}></Element></Frame> */}
+//                 {/* </Layout> */}
+//                 {/* </Grid> */}
+//             </Edit>
+//     );
+// }
 
 export const PageCreate = (props) => (
     <Create  {...props}>
@@ -80,6 +93,7 @@ export const PageCreate = (props) => (
 export default {
     list: PageList,
     create: PageCreate,
-    edit: PageEdit,
+    // edit: PageEdit,
+    edit: PageEditor,
     icon: ArticleIcon,
 };

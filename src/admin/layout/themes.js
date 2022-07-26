@@ -38,25 +38,26 @@ export const darkTheme = {
 
 export const lightTheme = {
     palette: {
-        primary: {
-            main: '#4f3cc9',
-        },
-        secondary: {
-            light: '#5f5fc4',
-            main: '#283593',
-            dark: '#001064',
-            contrastText: '#fff',
-        },
-        background: {
-            default: '#fcfcfe',
-        },
+        // primary: {
+        //     main: '#4f3cc9',
+        // },
+        // secondary: {
+        //     light: '#5f5fc4',
+        //     main: '#283593',
+        //     dark: '#001064',
+        //     contrastText: '#fff',
+        // },
+        // background: {
+        //     default: '#fcfcfe',
+        // },
         mode: 'light',
     },
     shape: {
-        borderRadius: 10,
+        borderRadius: 5,
     },
     sidebar: {
         width: 200,
+        closedWidth: 0, 
     },
     components: {
         ...defaultTheme.components,
@@ -65,7 +66,7 @@ export const lightTheme = {
                 root: {
                     borderLeft: '3px solid #fff',
                     '&.RaMenuItemLink-active': {
-                        borderLeft: '3px solid #4f3cc9',
+                        borderLeft: '3px solid #1976d2',
                     },
                 },
             },

@@ -1,6 +1,7 @@
 
 // React
 import * as React from 'react';
+import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
 // MUI
@@ -38,7 +39,7 @@ export default function CustomAppBar(props) {
     const isLargeEnough = useMediaQuery(theme => theme.breakpoints.up('sm'));
 
     return (
-        <AppBar {...props} color="secondary" elevation={1} userMenu={<CustomUserMenu />}>
+        <AppBar {...props} color="secondary" elevation={1} userMenu={<CustomUserMenu />} >
             <Typography variant="h6" color="inherit" id="react-admin-title" sx={{
                 flex: 1,
                 textOverflow: 'ellipsis',

@@ -90,7 +90,7 @@ const dataProvider = {
         }
     
         // Otherwise use DRF implementation
-        return DRFProvider.create(resource, params);
+        return DRFProvider.update(resource, params);
     },
 };
 export { dataProvider };

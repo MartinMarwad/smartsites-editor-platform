@@ -35,7 +35,7 @@ export default function RightSideToolbar(scheme) {
     };
 
     return (
-        <Box sx={{ width: 500,  }}> 
+        <Box sx={{  }}> 
             <TabContext value={value}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <TabList onChange={handleChange} aria-label="toolbar-tabs" centered>
