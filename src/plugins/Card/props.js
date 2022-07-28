@@ -25,6 +25,10 @@ export const Props = {
         pb: 1,
         pr: 1,
         pl: 1,
+        mr: 1,
+        ml: 1,
+        mt: 1,
+        mb: 1,
         boxShadow: 3,
     }
 };

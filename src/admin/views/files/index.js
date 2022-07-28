@@ -2,7 +2,7 @@
 // React
 import React from "react";
 import { Create, Datagrid, Edit, EditButton, List, Resource, ShowButton, SimpleForm, } from "react-admin";
-import { ImageField, TextField, FileField , NumberField } from "react-admin";
+import { ImageField, TextField, FileField , NumberField, UrlField } from "react-admin";
 import { TextInput, FileInput } from "react-admin";
 
 // MUI
@@ -16,11 +16,10 @@ const FileList = (props) => {
     return (
             <List {...props}>
                 <Datagrid>
-                    <TextField source="id" />
-                    <TextField source="name" />
-                    <TextField source="description" />
-                    <TextField source="file" />
-                    {/* <FileField source="file" /> */}
+                    <TextField source="id" label="ID"/>
+                    <TextField source="name" label="File Name"/>
+                    <TextField source="description" label="File Description"/>
+                    <UrlField source="file" label="File URL"/>
                     <EditButton />
                     <ShowButton />
                 </Datagrid>

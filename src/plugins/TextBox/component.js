@@ -14,7 +14,7 @@ import Props from './props';
 
 
 // Plugin Component
-export default function TextBox(props) {
+export default function TextBox({ disableNodeStyle=false, ...props}) {
     const [open, setOpen] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const { actions, query, enabled, } = useEditor((state, query) => ({
@@ -29,10 +29,17 @@ export default function TextBox(props) {
 
     React.useEffect(() => { if (selected) return; setEditable(false);}, [selected]);
 
+    let nodeStyle;
+    if (disableNodeStyle) {
+        nodeStyle = {};
+    } else {
+        nodeStyle = getNodeStyle(selected, hovered);
+    }
+
     return (
         <Typography {...props}
             ref={(ref) => connect(drag(ref))}
-            sx={{...props.sx, ...getNodeStyle(selected, hovered)}} 
+            sx={{...props.sx, ...nodeStyle}} 
             onClick={(event) => {
                 setOpen(true); setAnchorEl(event.currentTarget); 
                 selected && setEditable(true);
@@ -42,10 +49,10 @@ export default function TextBox(props) {
                 tagName="p"
                 html={props.text} 
                 disabled={!enabled}
-                onChange={
-                    useCallback(debounce((e, editor) => {setProp((props) => (props.text = e.target.value.replace(/<\/?[^>]+(>|$)/g, '')));}, 1000), [])
-                }
-                // onChange={(e) => setProp((props) => (props.text = e.target.value.replace(/<\/?[^>]+(>|$)/g, '')))}
+                // onChange={
+                //     useCallback(debounce((e, editor) => {setProp((props) => (props.text = e.target.value.replace(/<\/?[^>]+(>|$)/g, '')));}, 1000), [])
+                // }
+                onChange={(e) => setProp((props) => (props.text = e.target.value.replace(/<\/?[^>]+(>|$)/g, '')))}
             />
 
             {selected && <Toolbar open={open} anchorEl={anchorEl} /> }

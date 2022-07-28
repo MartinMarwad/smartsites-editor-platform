@@ -45,10 +45,10 @@ class PageViewSet(viewsets.ModelViewSet):
     search_fields = ["title", "url"]
 
 # Image API
-class ImageViewSet(viewsets.ModelViewSet):
-    """API endpoint that allows images to be viewed or edited."""
-    queryset = models.Image.objects.all()
-    serializer_class = serializers.ImageSerializer
+# class ImageViewSet(viewsets.ModelViewSet):
+#     """API endpoint that allows images to be viewed or edited."""
+#     queryset = models.Image.objects.all()
+#     serializer_class = serializers.ImageSerializer
 
 # File API
 class FileViewSet(viewsets.ModelViewSet):

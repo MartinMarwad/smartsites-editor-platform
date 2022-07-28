@@ -44,6 +44,8 @@ export default function AppbarPlugin(props) {
             <MuiToolbar variant={props.variant} sx={props.sx}>
                 {props.children}
             </MuiToolbar>
+
+            {selected && <Toolbar open={open} anchorEl={anchorEl} /> }
         </AppBar>
     );
 };

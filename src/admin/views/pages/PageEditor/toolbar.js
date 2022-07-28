@@ -164,6 +164,7 @@ export default function ToolbarComponent({ children, ...props }) {
                         copy(json);
                         // setSnackbarMessage('State copied to clipboard');
                         // enqueueSnackbar('State copied to clipboard', { variant: 'success' });
+                        notify('State copied to clipboard', { type: 'success' });
                     }}>
                         <ListItemText primary="Copy Current State" />
                     </MenuItem>

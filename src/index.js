@@ -73,7 +73,7 @@ function App(props) {
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <Box >
+            <Box sx={{ width: "100%", height: "100%"}}>
                 <BrowserRouter>
                     <Routes>
                         {pages.map((page, index) => (

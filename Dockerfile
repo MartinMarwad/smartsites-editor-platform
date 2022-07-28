@@ -28,9 +28,19 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | b
 RUN . "$NVM_DIR/nvm.sh" && nvm install ${NODE_VERSION} && nvm alias default ${NODE_VERSION}
 ENV PATH="/home/ubuntu/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
 
+# Install NPM Dependencies
+# ADD ./package.json $WORKDIR/package.json
+# RUN . "$NVM_DIR/nvm.sh" && nvm exec npm install --force
+
 # Install Python Dependencies
 ADD ./requirements.txt $WORKDIR/requirements.txt
 RUN pip3 install --upgrade pip && pip3 install -r requirements.txt
 
 # Copy files into container
 COPY . $WORKDIR
+
+# Build Node Packages
+# RUN . "$NVM_DIR/nvm.sh" && nvm exec npm run build
+
+# Execute Image
+# ENTRYPOINT bash ./start.sh ${MODE}

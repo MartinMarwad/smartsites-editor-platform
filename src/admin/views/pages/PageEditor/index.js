@@ -76,8 +76,8 @@ const LoadFrame = () => {
 
 // Page Editor Component
 export default function PageEditor() {
-    const [tabValue, setTabValue] = React.useState("2"); // useStore('PageEditor.MainTab', '1'); // 
-    const [openSidebar, setOpenSidebar] = useStore('PageEditor.Sidebar', tabValue === '1' ? true : false);
+    const [tabValue, setTabValue] = useStore('PageEditor.MainTab', '2'); // React.useState("2");
+    const [openSidebar, setOpenSidebar] = useStore('PageEditor.Sidebar', true);
     const drawerWidth = 400;
 
     // Styles: TabContainer

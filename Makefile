@@ -30,7 +30,6 @@ restart.prod:
 
 restart.clean: # Shutdown all containers, delete data, restart containers
 	@make down
-	@make fix 
 	@make clean
 	@make up
 
@@ -54,6 +53,7 @@ shell:
 clean:
 	@make clean.data
 	@make clean.build
+	@make clean.node_modules
 
 clean.build:
 	@rm -R -f ./build

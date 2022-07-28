@@ -13,9 +13,9 @@ class PageAdmin(admin.ModelAdmin):
     list_display  = ('id', 'title', 'url',)
 
 # Image
-@admin.register(models.Image)
-class ImageAdmin(admin.ModelAdmin):
-    list_display  = ('id', 'name', 'alt', 'image')
+# @admin.register(models.Image)
+# class ImageAdmin(admin.ModelAdmin):
+#     list_display  = ('id', 'name', 'alt', 'image')
 
 # File
 @admin.register(models.File)

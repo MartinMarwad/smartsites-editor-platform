@@ -172,7 +172,7 @@ export default function LinkSelectorUploaderService({ open, onClose, onSubmit })
                     Cancel
                 </Button>
                 <Button autoFocus variant="outlined" onClick={handleSubmit}>
-                    Select File
+                    Select Link
                 </Button>
             </DialogActions>
         </Dialog>

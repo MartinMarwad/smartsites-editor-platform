@@ -47,9 +47,9 @@ if [ "$1" = "DEVELOPMENT" ]; then
         echo "[$1] Django: Migrating Database"
         python3 manage.py migrate
 
-        # Create superuser
-        echo "[$1] Django: Creating superuser with username 'admin' and password 'password'..."
-        echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('admin', 'admin@example.com', 'password')" | python manage.py shell
+        # Load fixures
+        echo "[$1] Django: Populating Database with fixtures"
+        python3 manage.py loaddata data.json
 
     fi
 

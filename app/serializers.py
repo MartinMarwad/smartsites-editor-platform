@@ -19,19 +19,19 @@ import json
 class PageSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Page
-        fields = ("id", "title", "url", "content",)
+        fields = ("id", "title", "url", "content", "created", "updated",)
 
 # Image Serializer
-class ImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Image
-        fields = ("id", "name", "alt", "image",)
+# class ImageSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = models.Image
+#         fields = ("id", "name", "alt", "image",)
 
 # File Serializer
 class FileSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.File
-        fields = ("id", "name", "description", "file",)
+        fields = ("id", "name", "description", "file", "created", "updated",)
 
 # User Serializer
 class UserSerializer(serializers.ModelSerializer):

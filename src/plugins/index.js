@@ -141,7 +141,7 @@ const PluginComponents = [
         description: Button.craft.description,
         component: 
             <Element canvas is={Button}>
-                <TextBox/>
+                <TextBox disableNodeStyle/>
             </Element>,
         templates: [
             {
@@ -150,7 +150,7 @@ const PluginComponents = [
             },
             {
                 displayName: "Text Button",
-                component: <Element canvas is={Button} disableNodeStyle><TextBox/></Element>
+                component: <Element canvas is={Button} disableNodeStyle><TextBox disableNodeStyle/></Element>
             },
             {
                 displayName: "Image Button",

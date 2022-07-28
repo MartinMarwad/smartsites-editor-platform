@@ -16,6 +16,14 @@ class Page(models.Model):
 
     # Content of page in React-Page json format.
     content = models.JSONField(blank=True, null=True)
+    
+    # Page Views
+    views = models.IntegerField(blank=True, null=True, default=0)
+    
+    # Dates
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
 
     class Meta:
         verbose_name = "Page"
@@ -26,7 +34,7 @@ class Page(models.Model):
 
     def save(self, *args, **kwargs):
         if self.url != '/':
-            self.url = f"/{slugify(self.url)}/"
+            self.url = f"/{slugify(self.title)}/"
         super(Page, self).save(*args, **kwargs)
 
     def get_pages_as_dict():
@@ -42,29 +50,28 @@ class Page(models.Model):
 
 
 # Image Object
-class Image(models.Model):
-    """Image model. Defines the model for images."""
+# class Image(models.Model):
+#     """Image model. Defines the model for images."""
 
-    # Name of the image
-    name = models.TextField()
+#     # Name of the image
+#     name = models.TextField()
 
-    # Description or alternate text for the image
-    alt = models.TextField(blank=True, null=True)
+#     # Description or alternate text for the image
+#     alt = models.TextField(blank=True, null=True)
 
-    # Image file. File will be saved to MEDIA_ROOT / uploads / YEAR / MONTH / DAY
-    image = models.ImageField(upload_to ='uploads/images')
+#     # Image file. File will be saved to MEDIA_ROOT / uploads / YEAR / MONTH / DAY
+#     image = models.ImageField(upload_to ='uploads/images')
 
-    # Timestamps
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+#     # Timestamps
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
 
+#     class Meta:
+#         verbose_name = "Image"
+#         verbose_name_plural = "Images"
 
-    class Meta:
-        verbose_name = "Image"
-        verbose_name_plural = "Images"
-
-    def __str__(self):
-        return self.name 
+#     def __str__(self):
+#         return self.name 
 
 
 # File Object
@@ -81,8 +88,8 @@ class File(models.Model):
     file = models.FileField(upload_to ='uploads/files')
 
     # Timestamps
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
 
     class Meta:
@@ -91,6 +98,9 @@ class File(models.Model):
 
     def __str__(self):
         return self.name 
+    
+    
+
 
 
 
