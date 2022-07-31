@@ -18,8 +18,8 @@ export default function Image({ sx, ...props }) {
     const { connectors: { connect, drag }, } = useNode();
 
     return (
-        <Box sx={sx}>
-            <MuiBox container {...props} component="img">
+        <Box>
+            <MuiBox container {...props} sx={sx} component="img">
                 {props.children}
             </MuiBox>
         </Box>

@@ -62,9 +62,9 @@ fi
 # If running in Production Mode:
 if [ "$1" = "PRODUCTION" ]; then
 
-    # NODE: Create production build of NPM modules 
-    echo "[$1] Node: Running NPM production build (to generate html/static files)..."
-    npx npm run build
+    # # NODE: Create production build of NPM modules 
+    # echo "[$1] Node: Running NPM production build (to generate html/static files)..."
+    # npx npm run build
 
     # Django: Create database if it doesn't exist.
     if [ ! -d ./data ] ; then

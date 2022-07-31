@@ -170,49 +170,51 @@ export default function ToolbarComponent({ children, ...props }) {
                     </MenuItem>
                     <MenuItem onClick={() => setDialogOpen(true)}>
                         <ListItemText primary="Load Current State" />
-
-                        <Dialog
-                            open={dialogOpen}
-                            onClose={() => setDialogOpen(false)}
-                            fullWidth
-                            maxWidth="md"
-                        >
-                            <DialogTitle id="alert-dialog-title">Load state</DialogTitle>
-                            <DialogContent>
-                                <DialogContentText>
-                                    Paste the contents that was copied from the "Copy Current State" button.
-                                    This will replace the data on the page with the data entered here.
-                                </DialogContentText>
-                                <TextField
-                                    multiline
-                                    autoFocus
-                                    margin="dense"
-                                    id="name"
-                                    // label="State"
-                                    fullWidth
-                                    variant="outlined"
-                                    value={stateToLoad || ''}
-                                    onChange={(e) => setStateToLoad(e.target.value)}
-                                />
-                            </DialogContent>
-                            <DialogActions>
-                                <Button variant="outlined" onClick={() => setDialogOpen(false)} color="primary">
-                                    Cancel
-                                </Button>
-                                <Button variant="outlined" autoFocus color="primary" onClick={() => {
-                                    setDialogOpen(false);
-                                    // const json = lz.decompress(lz.decodeBase64(stateToLoad));
-                                    const json = stateToLoad;
-                                    actions.deserialize(json);
-                                    // setSnackbarMessage('State loaded');
-                                    // enqueueSnackbar('State loaded', { variant: 'success' });
-                                }}>
-                                    Load
-                                </Button>
-                            </DialogActions>
-                        </Dialog>
                     </MenuItem>
                 </Menu>
+
+                {/* Dialog */}
+                <Dialog
+                    open={dialogOpen}
+                    onClose={() => setDialogOpen(false)}
+                    fullWidth
+                    maxWidth="md"
+                >
+                    <DialogTitle id="alert-dialog-title">Load state</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            Paste the contents that was copied from the "Copy Current State" button.
+                            This will replace the data on the page with the data entered here.
+                        </DialogContentText>
+                        <TextField
+                            multiline
+                            autoFocus
+                            margin="dense"
+                            id="name"
+                            // label="State"
+                            fullWidth
+                            variant="outlined"
+                            value={stateToLoad || ''}
+                            onChange={(e) => setStateToLoad(e.target.value)}
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button variant="outlined" onClick={() => setDialogOpen(false)} color="primary">
+                            Cancel
+                        </Button>
+                        <Button variant="outlined" autoFocus color="primary" onClick={() => {
+                            setDialogOpen(false);
+                            // const json = lz.decompress(lz.decodeBase64(stateToLoad));
+                            const json = stateToLoad;
+                            actions.deserialize(json);
+                            // setSnackbarMessage('State loaded');
+                            // enqueueSnackbar('State loaded', { variant: 'success' });
+                            notify('State loaded', { type: 'success' });
+                        }}>
+                            Load
+                        </Button>
+                    </DialogActions>
+                </Dialog>
 
                 {/* Sidebar Toggle Button */}
                 <Tooltip title="Toggle Sidebar">

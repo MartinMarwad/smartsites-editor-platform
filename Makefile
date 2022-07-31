@@ -3,8 +3,12 @@
 export MODE=UNDEFINED
 
 # Fix any Windows/Unix file issues
-fix:
+fix.files:
 	@find . -type f -print0 | xargs -0 dos2unix
+
+# Fix permission issues
+fix.permissions:
+	@chown -R $USER:$(id -gn) .
 
 # Start
 up: # Start up container in development mode

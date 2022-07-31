@@ -33,8 +33,8 @@ class Page(models.Model):
         return self.title 
 
     def save(self, *args, **kwargs):
-        if self.url != '/':
-            self.url = f"/{slugify(self.title)}/"
+        # if self.url != '/':
+        #     self.url = f"/{slugify(self.title)}/"
         super(Page, self).save(*args, **kwargs)
 
     def get_pages_as_dict():
