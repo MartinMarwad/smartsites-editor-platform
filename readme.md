@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://github.com/MartinMarwad/smartsites-editor-platform/raw/master/docs/favicon.jpeg" alt="Smartsites Editor Platform" width="50%" />
+    <img src="https://github.com/MartinMarwad/smartsites-editor-platform/raw/master/docs/favicon.jpeg" alt="Smartsites Editor Platform" width="20%" />
 </p>
 <h1 align="center">Smartsites Editor Platform</h1>
 <p align="center">
@@ -13,6 +13,8 @@
         <img src="https://img.shields.io/badge/Versioning-CalVer-green" />
     </a>
 </p>
+
+*Warning: This project is currently under active development. Certain features may not be functional or may be added/removed without warning.*
 
 ## Table of Contents
 - [Table of Contents](#table-of-contents)
