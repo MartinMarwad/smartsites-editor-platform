@@ -11,8 +11,7 @@ import drfProvider, { jwtTokenAuthProvider, fetchJsonWithAuthJWTToken } from 'ra
 const API_URL = "/api";
 const API_TOKEN = "/api/token/";
 
-
-// Create httpClient request object 
+// Helper: Create httpClient request object 
 const httpClient = (url, options = {}) => {
     if (!options.headers) {
         options.headers = new Headers({ Accept: 'application/json' });
@@ -21,11 +20,24 @@ const httpClient = (url, options = {}) => {
     return fetchUtils.fetchJson(url, options);
 };
 
-
 // Auth Provider
-const JWTauthProvider = jwtTokenAuthProvider({obtainAuthTokenUrl: API_TOKEN});
+const JWTauthProvider = jwtTokenAuthProvider({ obtainAuthTokenUrl: API_TOKEN });
 const authProvider = {
     ...JWTauthProvider,
+
+    // Override login: https://github.com/bmihelac/ra-data-django-rest-framework/blob/master/src/jwtTokenAuthProvider.ts#L13
+    login: async ({ username, password }) => {
+        const status = JWTauthProvider.login({ username, password });
+        localStorage.setItem('username', username);
+        return status;
+    },
+
+    // Override logout:
+    logout: async () => {
+        const status = JWTauthProvider.logout();
+        localStorage.removeItem('username');
+        return status;
+    },
 
     // Override the get current user method
     getIdentity: () =>
@@ -39,30 +51,30 @@ export { authProvider };
 
 
 // Data Provider
-const DRFProvider =  drfProvider(API_URL, fetchJsonWithAuthJWTToken);
+const DRFProvider = drfProvider(API_URL, fetchJsonWithAuthJWTToken);
 const dataProvider = {
     ...DRFProvider,
-    
+
     // Override the create record method, to catch files. 
     create: (resource, params) => {
 
         // If "files" resource
         if (resource === "files" && params.data.file) {
-    
-             // Create FormData
+
+            // Create FormData
             let formData = new FormData();
             formData.append('id', params.data.id);
             formData.append('name', params.data.name);
             formData.append('description', params.data.description);
             formData.append('file', params.data.file.rawFile);
-    
+
             // Push response
             return httpClient(`${API_URL}/${resource}/`, {
                 method: 'POST',
                 body: formData,
-            }).then(({ json }) => ({data: { ...params.data, id: json.id}}));
+            }).then(({ json }) => ({ data: { ...params.data, id: json.id } }));
         }
-    
+
         // Otherwise use DRF implementation
         return DRFProvider.create(resource, params);
     },
@@ -72,21 +84,21 @@ const dataProvider = {
 
         // If "files" resource
         if (resource === "files" && params.data.file) {
-    
-             // Create FormData
+
+            // Create FormData
             let formData = new FormData();
             formData.append('id', params.data.id);
             formData.append('name', params.data.name);
             formData.append('description', params.data.description);
             formData.append('file', params.data.file.rawFile);
-    
+
             // Push response
             return httpClient(`${API_URL}/${resource}/${params.id}/`, {
                 method: 'PATCH',
                 body: formData,
-            }).then(({ json }) => ({data: { ...params.data, id: json.id}}));
+            }).then(({ json }) => ({ data: { ...params.data, id: json.id } }));
         }
-    
+
         // Otherwise use DRF implementation
         return DRFProvider.update(resource, params);
     },

@@ -14,7 +14,7 @@
     </a>
 </p>
 
-*Warning: This project is currently under active development. Certain features may not be functional or may be added/removed without warning.*
+*Warning: This project is currently under active development. Certain features may not be functional or may be added/removed without warning. Documentation is ongoing.*
 
 ## Table of Contents
 - [Table of Contents](#table-of-contents)
