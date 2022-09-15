@@ -1,7 +1,19 @@
 
 // React
 import * as React from 'react';
-import { Title } from 'react-admin';
+// import { Title } from 'react-admin';
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+} from 'chart.js';
+import { Line } from 'react-chartjs-2';
+import faker from 'faker';
 
 // MUI
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
@@ -32,75 +44,95 @@ import Deposits from './Deposits';
 import Orders from './Orders';
 
 
+const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+}));
 
-function Copyright(props) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend
+);
 
-const drawerWidth = 240;
+export const options = {
+    responsive: true,
+    plugins: {
+        legend: {
+            position: 'top',
+        },
+        title: {
+            display: true,
+            text: 'Chart.js Line Chart',
+        },
+    },
+};
 
-const mdTheme = createTheme();
+const labels = ['January1', 'February2', 'March3', 'April4', 'May5', 'June6', 'July7'];
 
+export const data = {
+    labels,
+    datasets: [
+        {
+            label: 'Dataset 1',
+            data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
+            borderColor: 'rgb(255, 99, 132)',
+            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        },
+        {
+            label: 'Dataset 2',
+            data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
+            borderColor: 'rgb(53, 162, 235)',
+            backgroundColor: 'rgba(53, 162, 235, 0.5)',
+        },
+    ],
+};
+
+
+// Create Dashboard Component 
 export default function Dashboard() {
-    const [open, setOpen] = React.useState(true);
-    const toggleDrawer = () => {
-        setOpen(!open);
-    };
-
     return (
-        <Box sx={{ mt: 5 }}>
-            <Title title="Dashboard" />
-            <CardContent>
-                <Container sx={{ mt: 4, mb: 4 }}>
-                    <Grid container spacing={3}>
-                        {/* Chart */}
-                        <Grid item xs={12} md={8} lg={9}>
-                            <Paper
-                                sx={{
-                                    p: 2,
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    height: 240,
-                                }}
-                            >
-                                <Chart />
-                            </Paper>
-                        </Grid>
-                        {/* Recent Deposits */}
-                        <Grid item xs={12} md={4} lg={3}>
-                            <Paper
-                                sx={{
-                                    p: 2,
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    height: 240,
-                                }}
-                            >
-                                <Deposits />
-                            </Paper>
-                        </Grid>
-                        {/* Recent Orders */}
-                        <Grid item xs={12}>
-                            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                                <Orders />
-                            </Paper>
-                        </Grid>
-                    </Grid>
-                    <Copyright sx={{ pt: 4 }} />
-                </Container>
-            </CardContent>
-        </Box>
+        <Grid container spacing={2} alignItems="stretch" sx={{ mt: 5 }}>
 
+            {/* Row 1 */}
 
+            <Grid item xs={3}>
+                <Item>thing 1</Item>
+            </Grid>
 
+            <Grid item xs={3}>
+                <Item>thing 2</Item>
+            </Grid>
+
+            <Grid item xs={3}>
+                <Item>thing 3</Item>
+            </Grid>
+
+            <Grid item xs={3}>
+                <Item>thing 4</Item>
+            </Grid>
+
+            <Grid item xs={8}>
+                <Item>
+                    <Line options={options} data={data} />
+                </Item>
+            </Grid>
+            <Grid item xs={4}>
+                <Item>xs=4</Item>
+            </Grid>
+            <Grid item xs={4}>
+                <Item>xs=4</Item>
+            </Grid>
+            <Grid item xs={8}>
+                <Item>xs=8</Item>
+            </Grid>
+        </Grid>
     );
 }

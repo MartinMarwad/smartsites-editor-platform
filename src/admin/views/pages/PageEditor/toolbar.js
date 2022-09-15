@@ -76,159 +76,156 @@ export default function ToolbarComponent({ children, ...props }) {
         <Box {...props}>
 
             {/* Button */}
-            <Box sx={{ flexGrow: 1, p: 1, }}>
+            {/* <Box sx={{ flexGrow: 1, p: 1, }}>
                 <Tooltip title="Save">
                     <span>
                         <Button variant="outlined" disabled={!canUndo} onClick={handleSave}>Save</Button>
                     </span>
                 </Tooltip>
-            </Box>
+            </Box> */}
 
             {/* Tabs */}
-            { children }
+            {/* { children } */}
 
-            {/* Toolbar */}
-            <Toolbar>
 
-                {/* Undo button */}
-                <Tooltip title="Undo">
-                    <span>
-                        <IconButton
-                            size="large"
-                            disabled={!canUndo}
-                            onClick={() => actions.history.undo()}
-                        >
-                            <UndoIcon />
-                        </IconButton>
-                    </span>
-                </Tooltip>
+            {/* Undo button */}
+            <Tooltip title="Undo">
+                <span>
+                    <IconButton
+                        size="large"
+                        disabled={!canUndo}
+                        onClick={() => actions.history.undo()}
+                    >
+                        <UndoIcon />
+                    </IconButton>
+                </span>
+            </Tooltip>
 
-                {/* Redo button */}
-                <Tooltip title="Redo">
-                    <span>
-                        <IconButton
-                            size="large"
-                            disabled={!canRedo}
-                            onClick={() => actions.history.redo()}
-                        >
-                            <RedoIcon />
-                        </IconButton>
-                    </span>
-                </Tooltip>
+            {/* Redo button */}
+            <Tooltip title="Redo">
+                <span>
+                    <IconButton
+                        size="large"
+                        disabled={!canRedo}
+                        onClick={() => actions.history.redo()}
+                    >
+                        <RedoIcon />
+                    </IconButton>
+                </span>
+            </Tooltip>
 
-                {/* Preview button */}
-                <Tooltip title="Preview">
+            {/* Preview button */}
+            <Tooltip title="Preview">
+                <IconButton
+                    size="large"
+                    aria-haspopup="true"
+                    onClick={() => {
+                        setPreview(!preview); 
+                        actions.setOptions((options) => (options.enabled = preview))
+                    }}
+                >
+                    {preview ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                </IconButton>
+            </Tooltip>
+
+            {/* More Options button */}
+            <Tooltip title="More Options">
+                <span>
                     <IconButton
                         size="large"
                         aria-haspopup="true"
-                        onClick={() => {
-                            setPreview(!preview); 
-                            actions.setOptions((options) => (options.enabled = preview))
-                        }}
+                        aria-controls="appbar-options-menu"
+                        onClick={(event) => {setOptionsMenu(event.currentTarget);}}
                     >
-                        {preview ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                        <MoreVertIcon />
                     </IconButton>
-                </Tooltip>
+                </span>
+            </Tooltip>
+            <Menu
+                id="appbar-options-menu"
+                anchorEl={optionsMenu}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                open={Boolean(optionsMenu)}
+                onClose={() => { setOptionsMenu(null); }}
+            >
+                <MenuItem onClick={() => {
+                    const json = query.serialize();
+                    // copy(lz.encodeBase64(lz.compress(json)));
+                    copy(json);
+                    // setSnackbarMessage('State copied to clipboard');
+                    // enqueueSnackbar('State copied to clipboard', { variant: 'success' });
+                    notify('State copied to clipboard', { type: 'success' });
+                }}>
+                    <ListItemText primary="Copy Current State" />
+                </MenuItem>
+                <MenuItem onClick={() => setDialogOpen(true)}>
+                    <ListItemText primary="Load Current State" />
+                </MenuItem>
+            </Menu>
 
-                {/* More Options button */}
-                <Tooltip title="More Options">
-                    <span>
-                        <IconButton
-                            size="large"
-                            aria-haspopup="true"
-                            aria-controls="appbar-options-menu"
-                            onClick={(event) => {setOptionsMenu(event.currentTarget);}}
-                        >
-                            <MoreVertIcon />
-                        </IconButton>
-                    </span>
-                </Tooltip>
-                <Menu
-                    id="appbar-options-menu"
-                    anchorEl={optionsMenu}
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'right',
-                    }}
-                    keepMounted
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                    }}
-                    open={Boolean(optionsMenu)}
-                    onClose={() => { setOptionsMenu(null); }}
-                >
-                    <MenuItem onClick={() => {
-                        const json = query.serialize();
-                        // copy(lz.encodeBase64(lz.compress(json)));
-                        copy(json);
-                        // setSnackbarMessage('State copied to clipboard');
-                        // enqueueSnackbar('State copied to clipboard', { variant: 'success' });
-                        notify('State copied to clipboard', { type: 'success' });
+            {/* Dialog */}
+            <Dialog
+                open={dialogOpen}
+                onClose={() => setDialogOpen(false)}
+                fullWidth
+                maxWidth="md"
+            >
+                <DialogTitle id="alert-dialog-title">Load state</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Paste the contents that was copied from the "Copy Current State" button.
+                        This will replace the data on the page with the data entered here.
+                    </DialogContentText>
+                    <TextField
+                        multiline
+                        autoFocus
+                        margin="dense"
+                        id="name"
+                        // label="State"
+                        fullWidth
+                        variant="outlined"
+                        value={stateToLoad || ''}
+                        onChange={(e) => setStateToLoad(e.target.value)}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button variant="outlined" onClick={() => setDialogOpen(false)} color="primary">
+                        Cancel
+                    </Button>
+                    <Button variant="outlined" autoFocus color="primary" onClick={() => {
+                        setDialogOpen(false);
+                        // const json = lz.decompress(lz.decodeBase64(stateToLoad));
+                        const json = stateToLoad;
+                        actions.deserialize(json);
+                        // setSnackbarMessage('State loaded');
+                        // enqueueSnackbar('State loaded', { variant: 'success' });
+                        notify('State loaded', { type: 'success' });
                     }}>
-                        <ListItemText primary="Copy Current State" />
-                    </MenuItem>
-                    <MenuItem onClick={() => setDialogOpen(true)}>
-                        <ListItemText primary="Load Current State" />
-                    </MenuItem>
-                </Menu>
+                        Load
+                    </Button>
+                </DialogActions>
+            </Dialog>
 
-                {/* Dialog */}
-                <Dialog
-                    open={dialogOpen}
-                    onClose={() => setDialogOpen(false)}
-                    fullWidth
-                    maxWidth="md"
-                >
-                    <DialogTitle id="alert-dialog-title">Load state</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText>
-                            Paste the contents that was copied from the "Copy Current State" button.
-                            This will replace the data on the page with the data entered here.
-                        </DialogContentText>
-                        <TextField
-                            multiline
-                            autoFocus
-                            margin="dense"
-                            id="name"
-                            // label="State"
-                            fullWidth
-                            variant="outlined"
-                            value={stateToLoad || ''}
-                            onChange={(e) => setStateToLoad(e.target.value)}
-                        />
-                    </DialogContent>
-                    <DialogActions>
-                        <Button variant="outlined" onClick={() => setDialogOpen(false)} color="primary">
-                            Cancel
-                        </Button>
-                        <Button variant="outlined" autoFocus color="primary" onClick={() => {
-                            setDialogOpen(false);
-                            // const json = lz.decompress(lz.decodeBase64(stateToLoad));
-                            const json = stateToLoad;
-                            actions.deserialize(json);
-                            // setSnackbarMessage('State loaded');
-                            // enqueueSnackbar('State loaded', { variant: 'success' });
-                            notify('State loaded', { type: 'success' });
-                        }}>
-                            Load
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+            {/* Sidebar Toggle Button */}
+            <Tooltip title="Toggle Sidebar">
+                <span>
+                    <IconButton
+                        size="large"
+                        onClick={() => { openSidebar ? setOpenSidebar(false) : setOpenSidebar(true) }}
+                    >
+                        <FormatAlignRightOutlinedIcon />
+                    </IconButton>
+                </span>
+            </Tooltip>
 
-                {/* Sidebar Toggle Button */}
-                <Tooltip title="Toggle Sidebar">
-                    <span>
-                        <IconButton
-                            size="large"
-                            onClick={() => { openSidebar ? setOpenSidebar(false) : setOpenSidebar(true) }}
-                        >
-                            <FormatAlignRightOutlinedIcon />
-                        </IconButton>
-                    </span>
-                </Tooltip>
-
-            </Toolbar>
         </Box>
     );
 }

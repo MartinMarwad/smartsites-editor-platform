@@ -2,6 +2,7 @@
 // React
 import React from 'react';
 import { Element, useNode, useEditor } from '@craftjs/core';
+import ContentEditable from 'react-contenteditable';
 
 // MUI
 import CardHeader from '@mui/material/CardHeader';
@@ -25,7 +26,24 @@ export default function CardHeaderPlugin({ children, ...props }) {
 
     return (
         <Box sx={{}}>
-            <CardHeader {...props} />
+            <CardHeader {...props}
+                title={
+                    <ContentEditable
+                        tagName="p"
+                        html={props.title}
+                        disabled={!enabled}
+                        onChange={(e) => setProp((props) => (props.title = e.target.value.replace(/<\/?[^>]+(>|$)/g, '')))}
+                    />
+                }
+                subheader={
+                    <ContentEditable
+                        tagName="p"
+                        html={props.subheader}
+                        disabled={!enabled}
+                        onChange={(e) => setProp((props) => (props.subheader = e.target.value.replace(/<\/?[^>]+(>|$)/g, '')))}
+                    />
+                }
+            />
         </Box>
     );
 };

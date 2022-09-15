@@ -68,6 +68,12 @@ clean.node_modules:
 clean.data:
 	@rm -R -f ./data
 
+clean.staticfiles:
+	@rm -R -f ./data/staticfiles
+
+clean.mediafiles:
+	@rm -R -f ./data/media
+
 # Build project
 build: FORCE
 	@docker-compose build 

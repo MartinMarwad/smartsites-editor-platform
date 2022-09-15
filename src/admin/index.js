@@ -9,7 +9,7 @@ import { Route } from 'react-router';
 // import dataProviderFactory from './dataProvider';
 import { dataProvider, authProvider } from './Provider';
 import { Login, Layout } from './layout';
-import { lightTheme } from './layout/themes';
+import { lightTheme } from './themes';
 
 // Resource Views
 import Dashboard from './views/dashboard';
@@ -41,8 +41,9 @@ export default function App(props) {
             dashboard={Dashboard} 
             loginPage={Login} 
             layout={Layout} 
-            disableTelemetry 
             theme={lightTheme}
+            requireAuth
+            disableTelemetry
         >
             <CustomRoutes>
                 <Route path="settings" element={<Settings />}/>

@@ -26,15 +26,17 @@ from cra_helper.views import proxy_cra_requests
 from rest_framework import routers
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from dynamic_preferences.api.viewsets import GlobalPreferencesViewSet
+from dynamic_preferences.users.viewsets import UserPreferencesViewSet
 
 
 # Django REST API URL Routes
 router = routers.DefaultRouter()
 router.register("pages", views.PageViewSet)
-# router.register("images", views.ImageViewSet)
 router.register("files", views.FileViewSet)
 router.register("users", views.UserViewSet)
 router.register("notifications", views.NotificationViewSet)
+router.register('global', GlobalPreferencesViewSet, 'global')
 
 # Create URLs for site
 urlpatterns = [
@@ -49,6 +51,7 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    # re_path(r'^preferences/', include(router.urls, namespace='preferences')),
 
     # Whitenoise: Force Serve Media Files... This may be insecure: https://github.com/evansd/whitenoise/issues/62
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}), 

@@ -44,7 +44,7 @@ const authProvider = {
         Promise.resolve({
             id: 'user',
             fullName: localStorage.getItem('username'),
-            avatar: 'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png',
+            avatar: '/static/DefaultAvatar.png',
         }),
 };
 export { authProvider };

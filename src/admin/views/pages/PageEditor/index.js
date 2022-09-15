@@ -1,9 +1,12 @@
 
 // React
 import * as React from 'react';
-import { EditBase, useRecordContext } from "react-admin";
+import { EditBase, SimpleForm, useRecordContext } from "react-admin";
 import { useStore } from 'react-admin';
 import { Editor, Frame, Element, useEditor} from '@craftjs/core';
+import { useController } from 'react-hook-form';
+import { Labeled, useInput } from 'react-admin';
+import { SaveButton, DeleteButton, Toolbar as AdminToolbar } from 'react-admin';
 
 // MUI
 import { styled, useTheme } from '@mui/material/styles';
@@ -33,6 +36,9 @@ import Stack from '@mui/material/Stack';
 import Tabs from '@mui/material/Tabs';
 import { useTabContext } from "@mui/lab/TabContext"
 import Tooltip from '@mui/material/Tooltip';
+import Portal from '@mui/material/Portal';
+import Paper from '@mui/material/Paper';
+import TextField from '@mui/material/TextField';
 
 // MUI Icons
 import MenuIcon from '@mui/icons-material/Menu';
@@ -46,39 +52,18 @@ import CloseIcon from '@mui/icons-material/Close';
 import Sidebar from './Sidebar';
 import ToolbarComponent from './toolbar';
 import PageSettingsForm from './settings';
+import PageEditorForm from './editor';
 import Plugins from '../../../../plugins';
 
 
-
-// Fast Tabs: TODO
-function FastTabPanel({ children, className, style, value: id, containerProps, ...other }) {
-    const context = useTabContext()
-
-    if (context === null) {
-        throw new TypeError("No TabContext provided")
-    }
-
-    const tabId = context.value
-
-    return (
-        <Box className={className} sx={{ visibility: id === tabId ? "visible" : "hidden", }} {...other}>
-            {children}
-        </Box>
-    )
-}
-
-// Helper function to access the React-Admin context to give to Craft.js
-const LoadFrame = () => {
-    const record = useRecordContext();
-    if (!record) return null;
-    return <Frame data={record.content} />
-}
-
-// Page Editor Component
-export default function PageEditor() {
+// Page Editor Layout
+export default function PageEditorLayout() {
     const [tabValue, setTabValue] = useStore('PageEditor.MainTab', '2'); // React.useState("2");
     const [openSidebar, setOpenSidebar] = useStore('PageEditor.Sidebar', true);
     const drawerWidth = 400;
+    const AppbarRef = document.getElementById('react-admin-appbar-box'); 
+    const AppbarCenterRef = document.getElementById('react-admin-appbar-center');
+    const AppbarRightRef = document.getElementById('react-admin-appbar-right');
 
     // Styles: TabContainer
     const TabContainer = {
@@ -91,12 +76,13 @@ export default function PageEditor() {
 
     // Styles: TabHeader
     const TabHeader = {
-        border: 1, 
-        borderColor: 'divider', 
-        boxShadow: 2,
+        // border: 1, 
+        // borderColor: 'divider', 
+        // boxShadow: 2,
         display: 'flex',
         direction: "row",
         alignItems: "center",
+        // minWidth: 800,
     };
 
     // Styles: TabContents
@@ -111,24 +97,28 @@ export default function PageEditor() {
         <EditBase>
             <Editor resolver={Plugins}>
                 <Box sx={TabContainer}>
-
                     <TabContext value={tabValue} >
 
-                        {/* Tab Headers */}
-                        <ToolbarComponent sx={TabHeader}>
-                            <TabList value={tabValue} variant="standard" onChange={(e, v) => {setTabValue(v)}} sx={{flexGrow: 1}}>
+                        {/* Tab Headers: Rendered in portal to react-admin appbar */}
+                        <Portal container={AppbarCenterRef}>
+                            <TabList value={tabValue} variant="standard" onChange={(e, v) => { setTabValue(v) }} sx={{ flexGrow: 1 }}>
                                 <Tab value="1" label="Settings" />
                                 <Tab value="2" label="Edit Page" />
                                 {/* <Tab value="3" label="Tab 3" /> */}
                             </TabList>
-                        </ToolbarComponent>
+                        </Portal>
+
+                        <Portal container={AppbarRightRef}>
+                            <ToolbarComponent sx={TabHeader} />
+                        </Portal>
 
                         {/* Tab Content */}
                         <Box sx={TabContents}>
                             <TabPanel value="1" sx={{p: 0}}><PageSettingsForm/></TabPanel>
-                            <TabPanel value="2" sx={{p: 0}}><LoadFrame /></TabPanel>
-                            {/* <TabPanel value="3" sx={{p: 0}}>Hello</TabPanel> */}
+                            <TabPanel value="2" sx={{p: 0}}><PageEditorForm/></TabPanel>
+                            <TabPanel value="3" sx={{p: 0}}>Hello</TabPanel>
                         </Box>
+
                     </TabContext>
 
                     {/* Sidebar Drawer */}

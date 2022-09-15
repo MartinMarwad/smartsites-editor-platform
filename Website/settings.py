@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'django_extensions',
     'django_db_logger',
+    'dynamic_preferences',
 
      # Internal Extensions
     'app',
@@ -94,6 +95,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'cra_helper.context_processors.static',
+                'dynamic_preferences.processors.global_preferences',
             ],
         },
     },
@@ -279,4 +281,38 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.FormParser',
     ]
 
+}
+
+# Django Dynamic Preferences
+DYNAMIC_PREFERENCES = {
+
+    # a python attribute that will be added to model instances with preferences
+    # override this if the default collide with one of your models attributes/fields
+    'MANAGER_ATTRIBUTE': 'preferences',
+
+    # The python module in which registered preferences will be searched within each app
+    'REGISTRY_MODULE': 'preferences',
+
+    # Allow quick editing of preferences directly in admin list view
+    # WARNING: enabling this feature can cause data corruption if multiple users
+    # use the same list view at the same time, see https://code.djangoproject.com/ticket/11313
+    'ADMIN_ENABLE_CHANGELIST_FORM': False,
+
+    # Customize how you can access preferences from managers. The default is to
+    # separate sections and keys with two underscores. This is probably not a settings you'll
+    # want to change, but it's here just in case
+    'SECTION_KEY_SEPARATOR': '__',
+
+    # Use this to disable auto registration of the GlobalPreferenceModel.
+    # This can be useful to register your own model in the global_preferences_registry.
+    'ENABLE_GLOBAL_MODEL_AUTO_REGISTRATION': True,
+
+    # Use this to disable caching of preference. This can be useful to debug things
+    'ENABLE_CACHE': True,
+
+    # Use this to select which chache should be used to cache preferences. Defaults to default.
+    'CACHE_NAME': 'default',
+
+    # Use this to disable checking preferences names. This can be useful to debug things
+    'VALIDATE_NAMES': True,
 }

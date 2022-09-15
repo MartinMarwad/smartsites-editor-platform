@@ -4,7 +4,8 @@ import React from 'react';
 import { Element, useNode, useEditor } from '@craftjs/core';
 import { ROOT_NODE } from '@craftjs/utils';
 import ContentEditable from 'react-contenteditable';
-
+import { Link as RouterLink, LinkProps as RouterLinkProps, MemoryRouter, } from 'react-router-dom';
+  
 // MUI
 import Button from '@mui/material/Button';
 
@@ -14,6 +15,11 @@ import Box from '../Box';
 
 // Local
 import Props from './props';
+
+
+const LinkBehavior = React.forwardRef((props, ref) => (
+    <RouterLink ref={ref} {...props} role={undefined} />
+));
 
 
 // Plugin Component
@@ -38,6 +44,7 @@ export default function ButtonPlugin({ disableNodeStyle=false, ...props }) {
         <Button {...props} 
             ref={(ref) => connect(drag(ref))}
             sx={{...props.sx, ...styles}} 
+            // component={RouterLink} to={props.link} // TODO: Change buttons to use React Router links instead of browser page reload
             onClick={(event) => {
                 setOpen(true); setAnchorEl(event.currentTarget);
 

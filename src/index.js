@@ -6,11 +6,12 @@ import { BrowserRouter, HashRouter, Routes, Route, Outlet, Link } from "react-ro
 import axios from 'axios';
 import { Helmet } from 'react-helmet'
 import { Editor, Frame, Element } from '@craftjs/core';
+import FingerprintJS from '@fingerprintjs/fingerprintjs'
 
 // MUI
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box'; 
+import Box from '@mui/material/Box';
 
 // Plugins 
 import Plugins from './plugins';
@@ -31,11 +32,24 @@ window.component = window.component || 'App';
 window.props = window.props || { env: 'Create-React-App' };
 window.reactRoot = window.reactRoot || document.getElementById('root');
 
-
+// Load FingerprintJS
+const fpPromise = FingerprintJS.load({ monitoring: false })
 
 // Page
 function Page({ title, content }) {
     const theme = createTheme({});
+
+    // Experiment with visitor fingerprint tracking
+    (async () => {
+        // Get the visitor identifier when you need it.
+        const fp = await fpPromise
+        const result = await fp.get()
+
+        // This is the visitor identifier:
+        const visitorId = result.visitorId
+        console.log("Your Visitor ID is: ", visitorId)
+    })();
+
     return (
         <ThemeProvider theme={theme}>
             <Helmet><title>{title}</title></Helmet>
@@ -73,13 +87,13 @@ function App(props) {
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <Box sx={{ width: "100%", height: "100%"}}>
+            <Box sx={{ width: "100%", height: "100%" }}>
                 <BrowserRouter>
                     <Routes>
                         {pages.map((page, index) => (
                             <Route key={index.toString()} path={(page.id == 1) ? "/" : page.url} element={<Page title={page.title} content={page.content} />} />
                         ))}
-                        
+
                         <Route path="/admin/*" element={<Admin />} />
                     </Routes>
                 </BrowserRouter>
@@ -89,7 +103,7 @@ function App(props) {
 }
 
 // React the component as usual
-ReactDOM.render(React.createElement(App, window.props), window.reactRoot, );
+ReactDOM.render(React.createElement(App, window.props), window.reactRoot,);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

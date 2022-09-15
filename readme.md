@@ -4,43 +4,65 @@
 <h1 align="center">Smartsites Editor Platform</h1>
 <p align="center">
     <a href="https://discord.gg/tR4vuHb7wj">
-        <img src="https://img.shields.io/discord/1003360547766546462?color=7489d5&logo=discord&logoColor=ffffff" />
+        <img src="https://img.shields.io/discord/1003360547766546462?color=7489d5&logo=discord&logoColor=ffffff&style=for-the-badge" />
     </a>
     <a href="https://github.com/MartinMarwad/smartsites-editor-platform">
-        <img src="https://img.shields.io/static/v1?label=Status&message=Development&color=blue">
+        <img src="https://img.shields.io/static/v1?label=Status&message=Development&color=blue&style=for-the-badge">
+    </a>
+     <a href="https://github.com/MartinMarwad/smartsites-editor-platform/blob/master/LICENSE">
+        <img src="https://img.shields.io/badge/License-MIT-green?&style=for-the-badge" />
     </a>
     <a href="https://calver.org/">
-        <img src="https://img.shields.io/badge/Versioning-CalVer-green" />
+        <img src="https://img.shields.io/badge/Versioning-CalVer-green?&style=for-the-badge" />
     </a>
 </p>
 
-*Warning: This project is currently under active development. Certain features may not be functional or may be added/removed without warning. Documentation is ongoing.*
+***Warning: This project is currently under active development. Certain features may not be functional or may be added/removed without warning. Documentation is ongoing.***
 
 ## Table of Contents
+<details>
+<summary>Click to expand!</summary>
+  
 - [Table of Contents](#table-of-contents)
 - [Introduction](#introduction)
 - [Features](#features)
+    - [Self-Hosted and Open-Source](#self-hosted-and-open-source)
+    - [Content Management System (CMS)](#content-management-system-cms)
+    - [Drag-and-Drop Page Editor (WYSIWYG)](#drag-and-drop-page-editor-wysiwyg)
+    - [Powerful Dashboard Analytics](#powerful-dashboard-analytics)
 - [Getting Started](#getting-started)
-    - [Docker](#docker)
+    - [Install Docker](#install-docker)
     - [Running the project](#running-the-project)
+- [Community](#community)
 - [Technologies Used](#technologies-used)
+
+</details>
 
 ## Introduction
 The Smartsites Editor Platform (SEP) is an open-source full-stack platform for creating, publishing, and managing dynamic website content with zero code. 
 ![Demo](docs/demo1.png)
 
 ## Features
-General features include:
-- [x] Live WYSIWYG content editing: 
-- [x] Dynamic content management:
-    - [x] Ability to create dynamic pages with content.
-    - [x] Seamless media management with upload/download capabilities.
-- [ ] Website Administration:
-    - [ ] Website traffic analysis
+
+### Self-Hosted and Open-Source
+The project is fully open-source and self-hostable. 
+
+### Content Management System (CMS)
+Provides a complete Content Management System solution that allows you to easily create, edit, and publish pages to your site.
+- Easily upload static media and files to be served on your site.
+
+### Drag-and-Drop Page Editor (WYSIWYG)
+The page editor allows you to easily edit and add content to your site with live preview. Just drag-and-drop components onto the page. What you see is what you get (WYSIWYG).
+
+### Powerful Dashboard Analytics
+The dashboard provides powerful analytics for your website. 
+- Track the number of visitors to your site. 
 
 ## Getting Started
+<details>
+<summary>Click to expand!</summary>
 
-### Docker
+### Install Docker
 To get started, you will need to have [Docker](https://docs.docker.com/get-docker/) installed.
 
 If you are running Windows, you can install with [WinGet](https://github.com/microsoft/winget-cli):
@@ -75,6 +97,13 @@ To stop the container:
 ```
 make down
 ```
+</details>
+
+## Community
+Join the community:
+- For live chat/support: [Discord Server](https://discord.gg/tR4vuHb7wj)
+- For general discussions: [GitHub Discussions](https://github.com/MartinMarwad/smartsites-editor-platform/discussions)
+- For bug reports or issues: [GitHub Issue Tracker](https://github.com/MartinMarwad/smartsites-editor-platform/issues)
 
 ## Technologies Used
 - General:

@@ -72,15 +72,15 @@ export const lightTheme = {
             },
         },
         MuiPaper: {
-            styleOverrides: {
-                elevation1: {
-                    boxShadow: 'none',
-                },
-                root: {
-                    border: '1px solid #e0e0e3',
-                    backgroundClip: 'padding-box',
-                },
-            },
+            // styleOverrides: {
+            //     elevation1: {
+            //         boxShadow: 'none',
+            //     },
+            //     root: {
+            //         border: '1px solid #e0e0e3',
+            //         backgroundClip: 'padding-box',
+            //     },
+            // },
         },
         MuiAppBar: {
             styleOverrides: {
